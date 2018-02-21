@@ -293,17 +293,17 @@
 	
 	var _reactIntl = __webpack_require__(1);
 	
-	var _intl = __webpack_require__(48);
+	var _intl = __webpack_require__(49);
 	
 	var _intl2 = _interopRequireDefault(_intl);
 	
-	var _intlLocalesSupported = __webpack_require__(49);
+	var _intlLocalesSupported = __webpack_require__(50);
 	
 	var _intlLocalesSupported2 = _interopRequireDefault(_intlLocalesSupported);
 	
-	__webpack_require__(50);
+	__webpack_require__(51);
 	
-	var _en = __webpack_require__(60);
+	var _en = __webpack_require__(61);
 	
 	var _en2 = _interopRequireDefault(_en);
 	
@@ -311,9 +311,9 @@
 	
 	var _en4 = _interopRequireDefault(_en3);
 	
-	__webpack_require__(51);
+	__webpack_require__(52);
 	
-	var _fr = __webpack_require__(61);
+	var _fr = __webpack_require__(62);
 	
 	var _fr2 = _interopRequireDefault(_fr);
 	
@@ -444,13 +444,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxDevtools = __webpack_require__(62);
+	var _reduxDevtools = __webpack_require__(63);
 	
-	var _reduxDevtoolsLogMonitor = __webpack_require__(64);
+	var _reduxDevtoolsLogMonitor = __webpack_require__(65);
 	
 	var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 	
-	var _reduxDevtoolsDockMonitor = __webpack_require__(63);
+	var _reduxDevtoolsDockMonitor = __webpack_require__(64);
 	
 	var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 	
@@ -844,7 +844,7 @@
 	
 	var _redux = __webpack_require__(19);
 	
-	var _reduxThunk = __webpack_require__(65);
+	var _reduxThunk = __webpack_require__(66);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
@@ -994,9 +994,9 @@
 	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
 	
 	var webpack = __webpack_require__(11);
-	var cssnext = __webpack_require__(55);
-	var postcssFocus = __webpack_require__(56);
-	var postcssReporter = __webpack_require__(57);
+	var cssnext = __webpack_require__(56);
+	var postcssFocus = __webpack_require__(57);
+	var postcssReporter = __webpack_require__(58);
 	
 	module.exports = {
 	  devtool: 'cheap-module-eval-source-map',
@@ -1482,11 +1482,11 @@
 	
 	var _reactIntl = __webpack_require__(1);
 	
-	var _reactDom = __webpack_require__(59);
+	var _reactDom = __webpack_require__(60);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _reactBootstrap = __webpack_require__(58);
+	var _reactBootstrap = __webpack_require__(59);
 	
 	var _PostCreateWidget = {
 	  "form": "_1HNxVmVCIfsWU6Q22cRSd7",
@@ -1516,9 +1516,20 @@
 	
 	// import monkeylearn from 'monkeylearn'
 	
-	var MonkeyLearn = __webpack_require__(54);
+	var MonkeyLearn = __webpack_require__(55);
+	var AYLIENTextAPI = __webpack_require__(47);
 	
 	// Import Style
+	
+	var defaultDomain = 'restaurants';
+	
+	var _ref = _jsx('option', {
+	  value: 'restaurants'
+	}, 'restaurants', 'Restaurant');
+	
+	var _ref2 = _jsx('option', {
+	  value: 'hotels'
+	}, 'hotels', 'Hotels');
 	
 	var PostCreateWidget = exports.PostCreateWidget = function (_Component) {
 	  _inherits(PostCreateWidget, _Component);
@@ -1530,7 +1541,7 @@
 	
 	    _this.topicModeling = function () {
 	      var contentRef = _this.refs.content;
-	
+	      console.log("this.state.domain: ", _this.state.domain);
 	      if (contentRef.value) {
 	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
 	        var module_id = 'cl_hS9wMk9y';
@@ -1582,20 +1593,60 @@
 	      }
 	    };
 	
+	    _this.aspectBased = function () {
+	      var textapi = new AYLIENTextAPI({
+	        application_id: "d0610e54",
+	        application_key: "8e347bee6e64f01c958cd32738604d53"
+	      });
+	
+	      textapi.sentiment({
+	        'text': 'John is a very good football player!'
+	      }, function (error, response) {
+	        if (error === null) {
+	          console.log(response);
+	        }
+	      });
+	    };
+	
+	    _this.selectDomain = _this.selectDomain.bind(_this);
+	
 	    _this.state = {
 	      result: [],
-	      summary_text: ''
+	      summary_text: '',
+	      domain: defaultDomain
 	    };
 	    return _this;
 	  }
 	
 	  _createClass(PostCreateWidget, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {}
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.setState({
+	        domain: this.state.domain
+	      });
+	    }
+	  }, {
+	    key: 'componentWillUpdate',
+	    value: function componentWillUpdate(nextProps, nextState) {}
+	  }, {
+	    key: 'selectDomain',
+	    value: function selectDomain(e) {
+	      console.log("Select domain: ", e.target.value);
+	      this.setState({
+	        domain: e.target.value
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	
 	      var element = [];
-	      console.log("Element: ", element);
-	
 	      if (this.state.result.length > 0) {
 	        element.push(_jsx('div', {}, void 0, _jsx('span', {
 	          className: _PostCreateWidget2.default['left-bold']
@@ -1629,7 +1680,13 @@
 	        className: _PostCreateWidget2.default['form-content']
 	      }, void 0, _jsx('h2', {
 	        className: _PostCreateWidget2.default['form-title']
-	      }, void 0, 'Your text'), _react2.default.createElement('textarea', { placeholder: 'Please insert your text', className: _PostCreateWidget2.default['form-field'], ref: 'content' }), _jsx('a', {
+	      }, void 0, 'Your text'), _react2.default.createElement('textarea', { placeholder: 'Please insert your text', className: _PostCreateWidget2.default['form-field'], ref: 'content' }), _jsx('h2', {
+	        className: _PostCreateWidget2.default['form-title']
+	      }, void 0, 'Text domain'), _jsx('select', {
+	        className: _PostCreateWidget2.default['form-field'],
+	        value: this.state.domain,
+	        onChange: this.selectDomain
+	      }, void 0, _ref, _ref2), _jsx('a', {
 	        className: _PostCreateWidget2.default['post-submit-button'],
 	        onClick: this.topicModeling,
 	        href: '#'
@@ -1641,7 +1698,11 @@
 	        className: _PostCreateWidget2.default['post-submit-button-right'],
 	        onClick: this.summary,
 	        href: '#'
-	      }, void 0, 'Summary text'))), _jsx(_reactBootstrap.Col, {
+	      }, void 0, 'Summary text'), _jsx('a', {
+	        className: _PostCreateWidget2.default['post-submit-button-right'],
+	        onClick: this.aspectBased,
+	        href: '#'
+	      }, void 0, 'Aspect-Based'))), _jsx(_reactBootstrap.Col, {
 	        xs: 6,
 	        md: 6
 	      }, void 0, _jsx('div', {
@@ -1821,7 +1882,7 @@
 	exports.API_URL = undefined;
 	exports.default = callApi;
 	
-	var _isomorphicFetch = __webpack_require__(52);
+	var _isomorphicFetch = __webpack_require__(53);
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
@@ -1880,15 +1941,15 @@
 	
 	var _post2 = _interopRequireDefault(_post);
 	
-	var _cuid = __webpack_require__(47);
+	var _cuid = __webpack_require__(48);
 	
 	var _cuid2 = _interopRequireDefault(_cuid);
 	
-	var _limax = __webpack_require__(53);
+	var _limax = __webpack_require__(54);
 	
 	var _limax2 = _interopRequireDefault(_limax);
 	
-	var _sanitizeHtml = __webpack_require__(66);
+	var _sanitizeHtml = __webpack_require__(67);
 	
 	var _sanitizeHtml2 = _interopRequireDefault(_sanitizeHtml);
 	
@@ -2195,118 +2256,124 @@
 /* 47 */
 /***/ function(module, exports) {
 
-	module.exports = require("cuid");
+	module.exports = require("aylien_textapi");
 
 /***/ },
 /* 48 */
 /***/ function(module, exports) {
 
-	module.exports = require("intl");
+	module.exports = require("cuid");
 
 /***/ },
 /* 49 */
 /***/ function(module, exports) {
 
-	module.exports = require("intl-locales-supported");
+	module.exports = require("intl");
 
 /***/ },
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = require("intl/locale-data/jsonp/en");
+	module.exports = require("intl-locales-supported");
 
 /***/ },
 /* 51 */
 /***/ function(module, exports) {
 
-	module.exports = require("intl/locale-data/jsonp/fr");
+	module.exports = require("intl/locale-data/jsonp/en");
 
 /***/ },
 /* 52 */
 /***/ function(module, exports) {
 
-	module.exports = require("isomorphic-fetch");
+	module.exports = require("intl/locale-data/jsonp/fr");
 
 /***/ },
 /* 53 */
 /***/ function(module, exports) {
 
-	module.exports = require("limax");
+	module.exports = require("isomorphic-fetch");
 
 /***/ },
 /* 54 */
 /***/ function(module, exports) {
 
-	module.exports = require("monkeylearn");
+	module.exports = require("limax");
 
 /***/ },
 /* 55 */
 /***/ function(module, exports) {
 
-	module.exports = require("postcss-cssnext");
+	module.exports = require("monkeylearn");
 
 /***/ },
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = require("postcss-focus");
+	module.exports = require("postcss-cssnext");
 
 /***/ },
 /* 57 */
 /***/ function(module, exports) {
 
-	module.exports = require("postcss-reporter");
+	module.exports = require("postcss-focus");
 
 /***/ },
 /* 58 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-bootstrap");
+	module.exports = require("postcss-reporter");
 
 /***/ },
 /* 59 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-dom");
+	module.exports = require("react-bootstrap");
 
 /***/ },
 /* 60 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-intl/locale-data/en");
+	module.exports = require("react-dom");
 
 /***/ },
 /* 61 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-intl/locale-data/fr");
+	module.exports = require("react-intl/locale-data/en");
 
 /***/ },
 /* 62 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools");
+	module.exports = require("react-intl/locale-data/fr");
 
 /***/ },
 /* 63 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools-dock-monitor");
+	module.exports = require("redux-devtools");
 
 /***/ },
 /* 64 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools-log-monitor");
+	module.exports = require("redux-devtools-dock-monitor");
 
 /***/ },
 /* 65 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-thunk");
+	module.exports = require("redux-devtools-log-monitor");
 
 /***/ },
 /* 66 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-thunk");
+
+/***/ },
+/* 67 */
 /***/ function(module, exports) {
 
 	module.exports = require("sanitize-html");

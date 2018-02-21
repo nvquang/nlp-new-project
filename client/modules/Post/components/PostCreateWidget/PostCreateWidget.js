@@ -5,23 +5,52 @@ import { Grid, Row, Col } from 'react-bootstrap';
 // import monkeylearn from 'monkeylearn'
 
 var MonkeyLearn = require('monkeylearn');
+var AYLIENTextAPI = require('aylien_textapi');
+
 
 // Import Style
 import styles from './PostCreateWidget.css';
-
+var defaultDomain = 'restaurants';
 
 
 export class PostCreateWidget extends Component {
   constructor() {
     super();
+    this.selectDomain = this.selectDomain.bind(this)
+
     this.state = {
       result: [],
-      summary_text: ''
+      summary_text: '',
+      domain: defaultDomain
     };
   }
+
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      domain: this.state.domain
+    })
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+
+  }
+
+  selectDomain(e) {
+    console.log("Select domain: ", e.target.value)
+    this.setState({
+      domain: e.target.value
+    })
+  }
+
   topicModeling = () => {
     const contentRef = this.refs.content;
-
+    console.log("this.state.domain: ", this.state.domain)
     if (contentRef.value) {
       var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
       var module_id = 'cl_hS9wMk9y';
@@ -74,11 +103,24 @@ export class PostCreateWidget extends Component {
     }
   };
 
+  aspectBased = () => {
+    var textapi = new AYLIENTextAPI({
+      application_id: "d0610e54",
+      application_key: "8e347bee6e64f01c958cd32738604d53"
+    });
+
+    textapi.sentiment({
+      'text': 'John is a very good football player!'
+    }, function(error, response) {
+      if (error === null) {
+        console.log(response);
+      }
+    });
+  };
+
   render() {
 
     let element = []
-    console.log("Element: ", element)
-
     if (this.state.result.length > 0){
       element.push(<div>
                         <span className={styles['left-bold']}>Label</span>
@@ -112,9 +154,15 @@ export class PostCreateWidget extends Component {
                     <div className={styles['form-content']}>
                       <h2 className={styles['form-title']}>Your text</h2>
                       <textarea placeholder="Please insert your text" className={styles['form-field']} ref="content" />
+                      <h2 className={styles['form-title']}>Text domain</h2>
+                      <select className={styles['form-field']} value={this.state.domain} onChange={this.selectDomain}>
+                        <option key="restaurants" value="restaurants" >Restaurant</option>
+                        <option key="hotels" value="hotels">Hotels</option>
+                      </select>
                       <a className={styles['post-submit-button']} onClick={this.topicModeling} href="#">Topic extracter</a>
                       <a className={styles['post-submit-button-right']} onClick={this.sentimentClassify} href="#">Classify</a>
                       <a className={styles['post-submit-button-right']} onClick={this.summary} href="#">Summary text</a>
+                      <a className={styles['post-submit-button-right']} onClick={this.aspectBased} href="#">Aspect-Based</a>
                     </div>
                   </Col>
                   <Col xs={6} md={6}>
