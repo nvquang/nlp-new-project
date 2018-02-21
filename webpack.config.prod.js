@@ -19,7 +19,12 @@ module.exports = {
       'react-dom',
     ]
   },
-
+  node: {
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty',
+    fs: 'empty'
+  },
   output: {
     path: __dirname + '/dist/client/',
     filename: '[name].[chunkhash].js',

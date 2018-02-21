@@ -107,7 +107,9 @@
     "webpack-dev-server": "^2.1.0-beta.0",
     "webpack-externals-plugin": "^1.0.0",
     "webpack-hot-middleware": "^2.10.0",
-    "webpack-manifest-plugin": "^1.0.1"
+    "webpack-manifest-plugin": "^1.0.1",
+    "monkeylearn": "^0.1.11",
+    "react-bootstrap": "^0.31.2"
   },
   "devDependencies": {
     "ava": "^0.15.2",

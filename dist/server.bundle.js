@@ -303,7 +303,7 @@
 	
 	__webpack_require__(50);
 	
-	var _en = __webpack_require__(57);
+	var _en = __webpack_require__(60);
 	
 	var _en2 = _interopRequireDefault(_en);
 	
@@ -313,7 +313,7 @@
 	
 	__webpack_require__(51);
 	
-	var _fr = __webpack_require__(58);
+	var _fr = __webpack_require__(61);
 	
 	var _fr2 = _interopRequireDefault(_fr);
 	
@@ -444,13 +444,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxDevtools = __webpack_require__(59);
+	var _reduxDevtools = __webpack_require__(62);
 	
-	var _reduxDevtoolsLogMonitor = __webpack_require__(61);
+	var _reduxDevtoolsLogMonitor = __webpack_require__(64);
 	
 	var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 	
-	var _reduxDevtoolsDockMonitor = __webpack_require__(60);
+	var _reduxDevtoolsDockMonitor = __webpack_require__(63);
 	
 	var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 	
@@ -664,9 +664,6 @@
 	      return _jsx('div', {}, void 0, _jsx(_PostCreateWidget2.default, {
 	        addPost: this.handleAddPost,
 	        showAddPost: this.props.showAddPost
-	      }), _jsx(_PostList2.default, {
-	        handleDeletePost: this.handleDeletePost,
-	        posts: this.props.posts
 	      }));
 	    }
 	  }]);
@@ -847,7 +844,7 @@
 	
 	var _redux = __webpack_require__(19);
 	
-	var _reduxThunk = __webpack_require__(62);
+	var _reduxThunk = __webpack_require__(65);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
@@ -997,13 +994,18 @@
 	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
 	
 	var webpack = __webpack_require__(11);
-	var cssnext = __webpack_require__(54);
-	var postcssFocus = __webpack_require__(55);
-	var postcssReporter = __webpack_require__(56);
+	var cssnext = __webpack_require__(55);
+	var postcssFocus = __webpack_require__(56);
+	var postcssReporter = __webpack_require__(57);
 	
 	module.exports = {
 	  devtool: 'cheap-module-eval-source-map',
-	
+	  node: {
+	    net: 'empty',
+	    tls: 'empty',
+	    dns: 'empty',
+	    fs: 'empty'
+	  },
 	  entry: {
 	    app: ['eventsource-polyfill', 'webpack-hot-middleware/client', 'webpack/hot/only-dev-server', 'react-hot-loader/patch', './client/index.js'],
 	    vendor: ['react', 'react-dom']
@@ -1327,14 +1329,12 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _ref = _jsx('p', {}, void 0, '\xA9 2016 \xB7 Hashnode \xB7 LinearBytes Inc.');
+	var _ref = _jsx('p', {}, void 0, '\xA9 2018 \xB7 Quang Nguyen; Appable Vietnam Inc.');
 	
-	var _ref2 = _jsx('p', {}, void 0, _jsx(_reactIntl.FormattedMessage, {
-	  id: 'twitterMessage'
-	}), ' : ', _jsx('a', {
-	  href: 'https://twitter.com/@mern_io',
+	var _ref2 = _jsx('p', {}, void 0, 'Website : ', _jsx('a', {
+	  href: 'https://goappable.com',
 	  target: '_Blank'
-	}, void 0, '@mern_io'));
+	}, void 0, 'goappable.com'));
 	
 	function Footer() {
 	  return _jsx('div', {
@@ -1384,19 +1384,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _ref = _jsx('li', {}, void 0, _jsx(_reactIntl.FormattedMessage, {
-	  id: 'switchLanguage'
-	}));
-	
-	var _ref2 = _jsx(_reactRouter.Link, {
+	var _ref = _jsx(_reactRouter.Link, {
 	  to: '/'
-	}, void 0, _jsx(_reactIntl.FormattedMessage, {
-	  id: 'siteTitle'
-	}));
-	
-	var _ref3 = _jsx(_reactIntl.FormattedMessage, {
-	  id: 'addPost'
-	});
+	}, void 0, 'Natural language processing ');
 	
 	function Header(props, context) {
 	  var languageNodes = props.intl.enabledLanguages.map(function (lang) {
@@ -1411,16 +1401,10 @@
 	  return _jsx('div', {
 	    className: _Header2.default.header
 	  }, void 0, _jsx('div', {
-	    className: _Header2.default['language-switcher']
-	  }, void 0, _jsx('ul', {}, void 0, _ref, languageNodes)), _jsx('div', {
 	    className: _Header2.default.content
 	  }, void 0, _jsx('h1', {
 	    className: _Header2.default['site-title']
-	  }, void 0, _ref2), context.router.isActive('/', true) ? _jsx('a', {
-	    className: _Header2.default['add-post-button'],
-	    href: '#',
-	    onClick: props.toggleAddPost
-	  }, void 0, _ref3) : null));
+	  }, void 0, _ref)));
 	}
 	
 	Header.contextTypes = {
@@ -1498,13 +1482,26 @@
 	
 	var _reactIntl = __webpack_require__(1);
 	
+	var _reactDom = __webpack_require__(59);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _reactBootstrap = __webpack_require__(58);
+	
 	var _PostCreateWidget = {
 	  "form": "_1HNxVmVCIfsWU6Q22cRSd7",
 	  "form-content": "VlHIHfXe5nkoruuc0N8pJ",
 	  "form-title": "_32cczwmKrlcNdTsvCr-oBL",
 	  "form-field": "_1srubE9zVaJuCqkgKCA3lY",
 	  "post-submit-button": "_2m9Bzr_sJcQ7FK3o3X0PBL",
-	  "appear": "_30KT3DYyUvGj_5sBYnixvw"
+	  "appear": "_30KT3DYyUvGj_5sBYnixvw",
+	  "post-submit-button-right": "_3uOKgOlO1oRuTD4mhZRfzF",
+	  "right": "_10f_i5v1v9118pG4CEMlLU",
+	  "left": "heVE8tcYMU2dInRgPbPec",
+	  "right-bold": "_1TOCuN5YkSgi7i7F8IOXBi",
+	  "left-bold": "_3TuUoj_-kAJ40XQuP3ME8f",
+	  "probability-value-right": "_2SswK8BQptS7Z8HU9F9b_u",
+	  "bold": "_3nQ-uRCoNngPUNuP9qyUB3"
 	};
 	
 	var _PostCreateWidget2 = _interopRequireDefault(_PostCreateWidget);
@@ -1517,57 +1514,143 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	// import monkeylearn from 'monkeylearn'
+	
+	var MonkeyLearn = __webpack_require__(54);
+	
 	// Import Style
-	
-	
-	var _ref2 = _jsx(_reactIntl.FormattedMessage, {
-	  id: 'createNewPost'
-	});
-	
-	var _ref3 = _jsx(_reactIntl.FormattedMessage, {
-	  id: 'submit'
-	});
 	
 	var PostCreateWidget = exports.PostCreateWidget = function (_Component) {
 	  _inherits(PostCreateWidget, _Component);
 	
 	  function PostCreateWidget() {
-	    var _ref;
-	
-	    var _temp, _this, _ret;
-	
 	    _classCallCheck(this, PostCreateWidget);
 	
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
+	    var _this = _possibleConstructorReturn(this, (PostCreateWidget.__proto__ || Object.getPrototypeOf(PostCreateWidget)).call(this));
 	
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PostCreateWidget.__proto__ || Object.getPrototypeOf(PostCreateWidget)).call.apply(_ref, [this].concat(args))), _this), _this.addPost = function () {
-	      var nameRef = _this.refs.name;
-	      var titleRef = _this.refs.title;
+	    _this.topicModeling = function () {
 	      var contentRef = _this.refs.content;
-	      if (nameRef.value && titleRef.value && contentRef.value) {
-	        _this.props.addPost(nameRef.value, titleRef.value, contentRef.value);
-	        nameRef.value = titleRef.value = contentRef.value = '';
+	
+	      if (contentRef.value) {
+	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
+	        var module_id = 'cl_hS9wMk9y';
+	        var text_list = [contentRef.value];
+	        var p = ml.classifiers.classify(module_id, text_list, false);
+	        var self = _this;
+	        p.then(function (res) {
+	          self.setState({
+	            result: res.result[0],
+	            summary_text: ''
+	          });
+	        });
 	      }
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    };
+	
+	    _this.sentimentClassify = function () {
+	      var contentRef = _this.refs.content;
+	
+	      if (contentRef.value) {
+	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
+	        var module_id = 'cl_Jx8qzYJh';
+	        var text_list = [contentRef.value];
+	        var p = ml.classifiers.classify(module_id, text_list, false);
+	        var self = _this;
+	        p.then(function (res) {
+	          self.setState({
+	            result: res.result[0],
+	            summary_text: ''
+	          });
+	        });
+	      }
+	    };
+	
+	    _this.summary = function () {
+	      var contentRef = _this.refs.content;
+	
+	      if (contentRef.value) {
+	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
+	        var module_id = 'ex_94WD2XxD';
+	        var text_list = [contentRef.value];
+	        var p = ml.extractors.extract(module_id, text_list);
+	        var self = _this;
+	        p.then(function (res) {
+	          self.setState({
+	            summary_text: res.result[0]['parsed_value'],
+	            result: []
+	          });
+	        });
+	      }
+	    };
+	
+	    _this.state = {
+	      result: [],
+	      summary_text: ''
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(PostCreateWidget, [{
 	    key: 'render',
 	    value: function render() {
-	      var cls = _PostCreateWidget2.default.form + ' ' + (this.props.showAddPost ? _PostCreateWidget2.default.appear : '');
-	      return _jsx('div', {
-	        className: cls
+	
+	      var element = [];
+	      console.log("Element: ", element);
+	
+	      if (this.state.result.length > 0) {
+	        element.push(_jsx('div', {}, void 0, _jsx('span', {
+	          className: _PostCreateWidget2.default['left-bold']
+	        }, void 0, 'Label'), _jsx('span', {
+	          className: _PostCreateWidget2.default['right-bold']
+	        }, void 0, 'Probability'), '\u200B'));
+	
+	        for (var i = 0; i < this.state.result.length; i++) {
+	          element.push(_jsx('div', {}, void 0, _jsx('span', {
+	            className: _PostCreateWidget2.default['left']
+	          }, void 0, this.state.result[i]['label']), _jsx('span', {
+	            className: _PostCreateWidget2.default['probability-value-right']
+	          }, void 0, this.state.result[i]['probability']), '\u200B'));
+	        }
+	      };
+	
+	      if (this.state.summary_text.length > 0) {
+	        element.push(_jsx('div', {}, void 0, _jsx('span', {
+	          className: _PostCreateWidget2.default['left-bold']
+	        }, void 0, 'Summary'), '\u200B'));
+	
+	        element.push(_jsx('div', {}, void 0, _jsx('span', {}, void 0, this.state.summary_text), '\u200B'));
+	      };
+	
+	      return _jsx('div', {}, void 0, _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
+	        className: 'show-grid'
+	      }, void 0, _jsx(_reactBootstrap.Col, {
+	        xs: 6,
+	        md: 6
 	      }, void 0, _jsx('div', {
 	        className: _PostCreateWidget2.default['form-content']
 	      }, void 0, _jsx('h2', {
 	        className: _PostCreateWidget2.default['form-title']
-	      }, void 0, _ref2), _react2.default.createElement('input', { placeholder: this.props.intl.messages.authorName, className: _PostCreateWidget2.default['form-field'], ref: 'name' }), _react2.default.createElement('input', { placeholder: this.props.intl.messages.postTitle, className: _PostCreateWidget2.default['form-field'], ref: 'title' }), _react2.default.createElement('textarea', { placeholder: this.props.intl.messages.postContent, className: _PostCreateWidget2.default['form-field'], ref: 'content' }), _jsx('a', {
+	      }, void 0, 'Your text'), _react2.default.createElement('textarea', { placeholder: 'Please insert your text', className: _PostCreateWidget2.default['form-field'], ref: 'content' }), _jsx('a', {
 	        className: _PostCreateWidget2.default['post-submit-button'],
-	        href: '#',
-	        onClick: this.addPost
-	      }, void 0, _ref3)));
+	        onClick: this.topicModeling,
+	        href: '#'
+	      }, void 0, 'Topic extracter'), _jsx('a', {
+	        className: _PostCreateWidget2.default['post-submit-button-right'],
+	        onClick: this.sentimentClassify,
+	        href: '#'
+	      }, void 0, 'Classify'), _jsx('a', {
+	        className: _PostCreateWidget2.default['post-submit-button-right'],
+	        onClick: this.summary,
+	        href: '#'
+	      }, void 0, 'Summary text'))), _jsx(_reactBootstrap.Col, {
+	        xs: 6,
+	        md: 6
+	      }, void 0, _jsx('div', {
+	        className: _PostCreateWidget2.default['form-content']
+	      }, void 0, _jsx('h2', {
+	        className: _PostCreateWidget2.default['form-title']
+	      }, void 0, 'Result')), _jsx('div', {
+	        id: 'result'
+	      }, void 0, element)))));
 	    }
 	  }]);
 	
@@ -1805,7 +1888,7 @@
 	
 	var _limax2 = _interopRequireDefault(_limax);
 	
-	var _sanitizeHtml = __webpack_require__(63);
+	var _sanitizeHtml = __webpack_require__(66);
 	
 	var _sanitizeHtml2 = _interopRequireDefault(_sanitizeHtml);
 	
@@ -2028,7 +2111,7 @@
 	  var assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets);
 	  var chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets);
 	
-	  return '\n    <!doctype html>\n    <html>\n      <head>\n        ' + head.base.toString() + '\n        ' + head.title.toString() + '\n        ' + head.meta.toString() + '\n        ' + head.link.toString() + '\n        ' + head.script.toString() + '\n\n        ' + (isProdMode ? '<link rel=\'stylesheet\' href=\'' + assetsManifest['/app.css'] + '\' />' : '') + '\n        <link href=\'https://fonts.googleapis.com/css?family=Lato:400,300,700\' rel=\'stylesheet\' type=\'text/css\'/>\n        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />\n      </head>\n      <body>\n        <div id="root">' + html + '</div>\n        <script>\n          window.__INITIAL_STATE__ = ' + JSON.stringify(initialState) + ';\n          ' + (isProdMode ? '//<![CDATA[\n          window.webpackManifest = ' + JSON.stringify(chunkManifest) + ';\n          //]]>' : '') + '\n        </script>\n        <script src=\'' + (isProdMode ? assetsManifest['/vendor.js'] : '/vendor.js') + '\'></script>\n        <script src=\'' + (isProdMode ? assetsManifest['/app.js'] : '/app.js') + '\'></script>\n      </body>\n    </html>\n  ';
+	  return '\n    <!doctype html>\n    <html>\n      <head>\n        ' + head.base.toString() + '\n        ' + head.title.toString() + '\n        ' + head.meta.toString() + '\n        ' + head.link.toString() + '\n        ' + head.script.toString() + '\n\n        ' + (isProdMode ? '<link rel=\'stylesheet\' href=\'' + assetsManifest['/app.css'] + '\' />' : '') + '\n        <link href=\'https://fonts.googleapis.com/css?family=Lato:400,300,700\' rel=\'stylesheet\' type=\'text/css\'/>\n        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">\n      </head>\n      <body>\n        <div id="root">' + html + '</div>\n        <script>\n          window.__INITIAL_STATE__ = ' + JSON.stringify(initialState) + ';\n          ' + (isProdMode ? '//<![CDATA[\n          window.webpackManifest = ' + JSON.stringify(chunkManifest) + ';\n          //]]>' : '') + '\n        </script>\n        <script src=\'' + (isProdMode ? assetsManifest['/vendor.js'] : '/vendor.js') + '\'></script>\n        <script src=\'' + (isProdMode ? assetsManifest['/app.js'] : '/app.js') + '\'></script>\n      </body>\n    </html>\n  ';
 	};
 	
 	var renderError = function renderError(err) {
@@ -2154,58 +2237,76 @@
 /* 54 */
 /***/ function(module, exports) {
 
-	module.exports = require("postcss-cssnext");
+	module.exports = require("monkeylearn");
 
 /***/ },
 /* 55 */
 /***/ function(module, exports) {
 
-	module.exports = require("postcss-focus");
+	module.exports = require("postcss-cssnext");
 
 /***/ },
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = require("postcss-reporter");
+	module.exports = require("postcss-focus");
 
 /***/ },
 /* 57 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-intl/locale-data/en");
+	module.exports = require("postcss-reporter");
 
 /***/ },
 /* 58 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-intl/locale-data/fr");
+	module.exports = require("react-bootstrap");
 
 /***/ },
 /* 59 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools");
+	module.exports = require("react-dom");
 
 /***/ },
 /* 60 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools-dock-monitor");
+	module.exports = require("react-intl/locale-data/en");
 
 /***/ },
 /* 61 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools-log-monitor");
+	module.exports = require("react-intl/locale-data/fr");
 
 /***/ },
 /* 62 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-thunk");
+	module.exports = require("redux-devtools");
 
 /***/ },
 /* 63 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-devtools-dock-monitor");
+
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-devtools-log-monitor");
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-thunk");
+
+/***/ },
+/* 66 */
 /***/ function(module, exports) {
 
 	module.exports = require("sanitize-html");

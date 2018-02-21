@@ -16,6 +16,10 @@ module.exports = {
   node: {
     __filename: true,
     __dirname: true,
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty',
+    fs: 'empty',
   },
 
   resolve: {
