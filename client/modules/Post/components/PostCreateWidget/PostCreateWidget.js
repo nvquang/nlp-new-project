@@ -169,10 +169,8 @@ export class PostCreateWidget extends Component {
                         <option key="restaurants" value="restaurants" >Restaurant</option>
                         <option key="hotels" value="hotels">Hotels</option>
                       </select>
-                      <a className={styles['post-submit-button']} onClick={this.topicModeling} href="#">Topic extracter</a>
-                      <a className={styles['post-submit-button-right']} onClick={this.sentimentClassify} href="#">Classify</a>
-                      <a className={styles['post-submit-button-right']} onClick={this.summary} href="#">Summary text</a>
-                      <a className={styles['post-submit-button-right-5']} onClick={this.aspectBased} href="#">Aspect-Based</a>
+                      <a className={styles['post-submit-button']} onClick={this.summary} href="#">Summary text</a>
+                      <a className={styles['post-submit-button-right']} onClick={this.aspectBased} href="#">Aspect-Based</a>
                     </div>
                   </Col>
                   <Col xs={6} md={6}>

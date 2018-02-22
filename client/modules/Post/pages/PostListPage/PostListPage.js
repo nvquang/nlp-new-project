@@ -29,7 +29,6 @@ class PostListPage extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
-  console.log("State PostListPage: ", state)
   return {
     data: state.posts.data
   };
