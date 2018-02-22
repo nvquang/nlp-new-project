@@ -1,9 +1,9 @@
 // Export Constants
-export const TOGGLE_ADD_POST = 'TOGGLE_ADD_POST';
+export const TOGGLE_ASPECT_BASED = 'TOGGLE_ASPECT_BASED';
 
 // Export Actions
-export function toggleAddPost() {
+export function toggleAspectBased() {
   return {
-    type: TOGGLE_ADD_POST,
+    type: TOGGLE_ASPECT_BASED,
   };
 }

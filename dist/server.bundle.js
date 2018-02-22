@@ -37,7 +37,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 45);
+/******/ 	return __webpack_require__(__webpack_require__.s = 43);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -62,13 +62,13 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-router");
+	module.exports = require("react-helmet");
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-helmet");
+	module.exports = require("react-router");
 
 /***/ },
 /* 5 */
@@ -80,14 +80,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.toggleAddPost = toggleAddPost;
+	exports.toggleAspectBased = toggleAspectBased;
 	// Export Constants
-	var TOGGLE_ADD_POST = exports.TOGGLE_ADD_POST = 'TOGGLE_ADD_POST';
+	var TOGGLE_ASPECT_BASED = exports.TOGGLE_ASPECT_BASED = 'TOGGLE_ASPECT_BASED';
 	
 	// Export Actions
-	function toggleAddPost() {
+	function toggleAspectBased() {
 	  return {
-	    type: TOGGLE_ADD_POST
+	    type: TOGGLE_ASPECT_BASED
 	  };
 	}
 
@@ -101,151 +101,43 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.DELETE_POST = exports.ADD_POSTS = exports.ADD_POST = undefined;
-	exports.addPost = addPost;
-	exports.addPostRequest = addPostRequest;
-	exports.addPosts = addPosts;
-	exports.fetchPosts = fetchPosts;
-	exports.fetchPost = fetchPost;
-	exports.deletePost = deletePost;
-	exports.deletePostRequest = deletePostRequest;
+	exports.ASPECT_BASED = undefined;
+	exports.addAspectBased = addAspectBased;
+	exports.addAspectBasedRequest = addAspectBasedRequest;
 	
-	var _apiCaller = __webpack_require__(43);
+	var _apiCaller = __webpack_require__(41);
 	
 	var _apiCaller2 = _interopRequireDefault(_apiCaller);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// Export Constants
-	var ADD_POST = exports.ADD_POST = 'ADD_POST';
-	var ADD_POSTS = exports.ADD_POSTS = 'ADD_POSTS';
-	var DELETE_POST = exports.DELETE_POST = 'DELETE_POST';
+	var ASPECT_BASED = exports.ASPECT_BASED = 'ASPECT_BASED';
 	
 	// Export Actions
-	function addPost(post) {
+	function addAspectBased(aspectBased) {
+	  console.log("Aspect base: ", aspectBased);
 	  return {
-	    type: ADD_POST,
-	    post: post
+	    type: ASPECT_BASED,
+	    aspectBased: aspectBased
 	  };
 	}
 	
-	function addPostRequest(post) {
+	function addAspectBasedRequest(query) {
 	  return function (dispatch) {
-	    return (0, _apiCaller2.default)('posts', 'post', {
-	      post: {
-	        name: post.name,
-	        title: post.title,
-	        content: post.content
+	    return (0, _apiCaller2.default)('aspectsBased', 'post', {
+	      query: {
+	        text: query.text,
+	        domain: query.domain
 	      }
 	    }).then(function (res) {
-	      return dispatch(addPost(res.post));
-	    });
-	  };
-	}
-	
-	function addPosts(posts) {
-	  return {
-	    type: ADD_POSTS,
-	    posts: posts
-	  };
-	}
-	
-	function fetchPosts() {
-	  return function (dispatch) {
-	    return (0, _apiCaller2.default)('posts').then(function (res) {
-	      dispatch(addPosts(res.posts));
-	    });
-	  };
-	}
-	
-	function fetchPost(cuid) {
-	  return function (dispatch) {
-	    return (0, _apiCaller2.default)('posts/' + cuid).then(function (res) {
-	      return dispatch(addPost(res.post));
-	    });
-	  };
-	}
-	
-	function deletePost(cuid) {
-	  return {
-	    type: DELETE_POST,
-	    cuid: cuid
-	  };
-	}
-	
-	function deletePostRequest(cuid) {
-	  return function (dispatch) {
-	    return (0, _apiCaller2.default)('posts/' + cuid, 'delete').then(function () {
-	      return dispatch(deletePost(cuid));
+	      return dispatch(addAspectBased(res.aspectBased));
 	    });
 	  };
 	}
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.getPost = exports.getPosts = undefined;
-	
-	var _PostActions = __webpack_require__(6);
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
-	// Initial State
-	var initialState = { data: [] };
-	
-	var PostReducer = function PostReducer() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case _PostActions.ADD_POST:
-	      return {
-	        data: [action.post].concat(_toConsumableArray(state.data))
-	      };
-	
-	    case _PostActions.ADD_POSTS:
-	      return {
-	        data: action.posts
-	      };
-	
-	    case _PostActions.DELETE_POST:
-	      return {
-	        data: state.data.filter(function (post) {
-	          return post.cuid !== action.cuid;
-	        })
-	      };
-	
-	    default:
-	      return state;
-	  }
-	};
-	
-	/* Selectors */
-	
-	// Get all posts
-	var getPosts = exports.getPosts = function getPosts(state) {
-	  return state.posts.data;
-	};
-	
-	// Get post by cuid
-	var getPost = exports.getPost = function getPost(state, cuid) {
-	  return state.posts.data.filter(function (post) {
-	    return post.cuid === cuid;
-	  })[0];
-	};
-	
-	// Export Reducer
-	exports.default = PostReducer;
-
-/***/ },
-/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -262,25 +154,25 @@
 	exports.default = config;
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = require("express");
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = require("mongoose");
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = require("webpack");
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -293,31 +185,31 @@
 	
 	var _reactIntl = __webpack_require__(1);
 	
-	var _intl = __webpack_require__(49);
+	var _intl = __webpack_require__(47);
 	
 	var _intl2 = _interopRequireDefault(_intl);
 	
-	var _intlLocalesSupported = __webpack_require__(50);
+	var _intlLocalesSupported = __webpack_require__(48);
 	
 	var _intlLocalesSupported2 = _interopRequireDefault(_intlLocalesSupported);
 	
-	__webpack_require__(51);
+	__webpack_require__(49);
 	
-	var _en = __webpack_require__(61);
+	var _en = __webpack_require__(59);
 	
 	var _en2 = _interopRequireDefault(_en);
 	
-	var _en3 = __webpack_require__(33);
+	var _en3 = __webpack_require__(32);
 	
 	var _en4 = _interopRequireDefault(_en3);
 	
-	__webpack_require__(52);
+	__webpack_require__(50);
 	
-	var _fr = __webpack_require__(62);
+	var _fr = __webpack_require__(60);
 	
 	var _fr2 = _interopRequireDefault(_fr);
 	
-	var _fr3 = __webpack_require__(34);
+	var _fr3 = __webpack_require__(33);
 	
 	var _fr4 = _interopRequireDefault(_fr3);
 	
@@ -383,52 +275,7 @@
 	localizationData.fr.messages = flattenMessages(localizationData.fr.messages);
 
 /***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.getShowAddPost = undefined;
-	
-	var _AppActions = __webpack_require__(5);
-	
-	// Initial State
-	var initialState = {
-	  showAddPost: false
-	}; // Import Actions
-	
-	
-	var AppReducer = function AppReducer() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case _AppActions.TOGGLE_ADD_POST:
-	      return {
-	        showAddPost: !state.showAddPost
-	      };
-	
-	    default:
-	      return state;
-	  }
-	};
-	
-	/* Selectors */
-	
-	// Get showAddPost
-	var getShowAddPost = exports.getShowAddPost = function getShowAddPost(state) {
-	  return state.app.showAddPost;
-	};
-	
-	// Export Reducer
-	exports.default = AppReducer;
-
-/***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -444,13 +291,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxDevtools = __webpack_require__(63);
+	var _reduxDevtools = __webpack_require__(61);
 	
-	var _reduxDevtoolsLogMonitor = __webpack_require__(65);
+	var _reduxDevtoolsLogMonitor = __webpack_require__(63);
 	
 	var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 	
-	var _reduxDevtoolsDockMonitor = __webpack_require__(64);
+	var _reduxDevtoolsDockMonitor = __webpack_require__(62);
 	
 	var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 	
@@ -462,7 +309,7 @@
 	}, void 0, _jsx(_reduxDevtoolsLogMonitor2.default, {})));
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -477,7 +324,7 @@
 	
 	exports.switchLanguage = switchLanguage;
 	
-	var _setup = __webpack_require__(12);
+	var _setup = __webpack_require__(11);
 	
 	// Export Constants
 	var SWITCH_LANGUAGE = exports.SWITCH_LANGUAGE = 'SWITCH_LANGUAGE';
@@ -489,7 +336,42 @@
 	}
 
 /***/ },
-/* 16 */
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _PostActions = __webpack_require__(6);
+	
+	// Initial State
+	var initialState = { data: [] };
+	
+	var PostReducer = function PostReducer() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _PostActions.ASPECT_BASED:
+	      console.log("Action: ", action);
+	      return {
+	        data: [action.aspectBased]
+	      };
+	
+	    default:
+	      return state;
+	  }
+	};
+	
+	// Export Reducer
+	exports.default = PostReducer;
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -518,7 +400,7 @@
 	
 	var _reactRedux = __webpack_require__(2);
 	
-	var _reactHelmet = __webpack_require__(4);
+	var _reactHelmet = __webpack_require__(3);
 	
 	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
 	
@@ -538,7 +420,7 @@
 	
 	var _PostActions = __webpack_require__(6);
 	
-	var _PostReducer = __webpack_require__(7);
+	var _PostReducer = __webpack_require__(14);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -575,7 +457,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PostDetailPage);
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -595,10 +477,6 @@
 	
 	var _reactRedux = __webpack_require__(2);
 	
-	var _PostList = __webpack_require__(40);
-	
-	var _PostList2 = _interopRequireDefault(_PostList);
-	
 	var _PostCreateWidget = __webpack_require__(39);
 	
 	var _PostCreateWidget2 = _interopRequireDefault(_PostCreateWidget);
@@ -606,10 +484,6 @@
 	var _PostActions = __webpack_require__(6);
 	
 	var _AppActions = __webpack_require__(5);
-	
-	var _AppReducer = __webpack_require__(13);
-	
-	var _PostReducer = __webpack_require__(7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -623,9 +497,6 @@
 	
 	
 	// Import Actions
-	
-	
-	// Import Selectors
 	
 	
 	var PostListPage = function (_Component) {
@@ -642,28 +513,19 @@
 	      args[_key] = arguments[_key];
 	    }
 	
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PostListPage.__proto__ || Object.getPrototypeOf(PostListPage)).call.apply(_ref, [this].concat(args))), _this), _this.handleDeletePost = function (post) {
-	      if (confirm('Do you want to delete this post')) {
-	        // eslint-disable-line
-	        _this.props.dispatch((0, _PostActions.deletePostRequest)(post));
-	      }
-	    }, _this.handleAddPost = function (name, title, content) {
-	      _this.props.dispatch((0, _AppActions.toggleAddPost)());
-	      _this.props.dispatch((0, _PostActions.addPostRequest)({ name: name, title: title, content: content }));
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PostListPage.__proto__ || Object.getPrototypeOf(PostListPage)).call.apply(_ref, [this].concat(args))), _this), _this.handleAspectBased = function (text, domain) {
+	      _this.props.dispatch((0, _AppActions.toggleAspectBased)());
+	      _this.props.dispatch((0, _PostActions.addAspectBasedRequest)({ text: text, domain: domain }));
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 	
 	  _createClass(PostListPage, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.props.dispatch((0, _PostActions.fetchPosts)());
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log("ben cai listpage", this.props.data);
 	      return _jsx('div', {}, void 0, _jsx(_PostCreateWidget2.default, {
-	        addPost: this.handleAddPost,
-	        showAddPost: this.props.showAddPost
+	        aspectBased: this.handleAspectBased,
+	        data: this.props.data
 	      }));
 	    }
 	  }]);
@@ -671,18 +533,13 @@
 	  return PostListPage;
 	}(_react.Component);
 	
-	// Actions required to provide data for this component to render in sever side.
-	
-	
-	PostListPage.need = [function () {
-	  return (0, _PostActions.fetchPosts)();
-	}];
-	
 	// Retrieve data from store as props
+	
+	
 	function mapStateToProps(state) {
+	  console.log("State PostListPage: ", state);
 	  return {
-	    showAddPost: (0, _AppReducer.getShowAddPost)(state),
-	    posts: (0, _PostReducer.getPosts)(state)
+	    data: state.posts.data
 	  };
 	}
 	
@@ -693,7 +550,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PostListPage);
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -703,7 +560,7 @@
 	  value: true
 	});
 	
-	var _mongoose = __webpack_require__(10);
+	var _mongoose = __webpack_require__(9);
 	
 	var _mongoose2 = _interopRequireDefault(_mongoose);
 	
@@ -723,13 +580,13 @@
 	exports.default = _mongoose2.default.model('Post', postSchema);
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux");
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -768,7 +625,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(IntlWrapper);
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -785,9 +642,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(4);
 	
-	var _App = __webpack_require__(35);
+	var _App = __webpack_require__(34);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -806,8 +663,8 @@
 	 */
 	if (process.env.NODE_ENV !== 'production') {
 	  // Require async routes only in development for react-hot-reloader to work.
-	  __webpack_require__(17);
 	  __webpack_require__(16);
+	  __webpack_require__(15);
 	}
 	
 	// react-router setup with code-splitting
@@ -818,20 +675,20 @@
 	}, void 0, _jsx(_reactRouter.IndexRoute, {
 	  getComponent: function getComponent(nextState, cb) {
 	    Promise.resolve().catch(function(err) { __webpack_require__.oe(err); }).then((function (require) {
-	      cb(null, __webpack_require__(17).default);
+	      cb(null, __webpack_require__(16).default);
 	    }).bind(null, __webpack_require__));
 	  }
 	}), _jsx(_reactRouter.Route, {
 	  path: '/posts/:slug-:cuid',
 	  getComponent: function getComponent(nextState, cb) {
 	    Promise.resolve().catch(function(err) { __webpack_require__.oe(err); }).then((function (require) {
-	      cb(null, __webpack_require__(16).default);
+	      cb(null, __webpack_require__(15).default);
 	    }).bind(null, __webpack_require__));
 	  }
 	}));
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -842,17 +699,17 @@
 	});
 	exports.configureStore = configureStore;
 	
-	var _redux = __webpack_require__(19);
+	var _redux = __webpack_require__(18);
 	
-	var _reduxThunk = __webpack_require__(66);
+	var _reduxThunk = __webpack_require__(64);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _DevTools = __webpack_require__(14);
+	var _DevTools = __webpack_require__(12);
 	
 	var _DevTools2 = _interopRequireDefault(_DevTools);
 	
-	var _reducers = __webpack_require__(42);
+	var _reducers = __webpack_require__(40);
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
@@ -887,7 +744,7 @@
 	}
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -918,11 +775,37 @@
 	  });
 	};
 	
-	var _post = __webpack_require__(18);
+	var _post = __webpack_require__(17);
 	
 	var _post2 = _interopRequireDefault(_post);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _express = __webpack_require__(8);
+	
+	var _post = __webpack_require__(42);
+	
+	var PostController = _interopRequireWildcard(_post);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var router = new _express.Router();
+	
+	// Add a new Post
+	router.route('/aspectsBased').post(PostController.aspectsBased);
+	
+	exports.default = router;
 
 /***/ },
 /* 24 */
@@ -934,44 +817,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	var _express = __webpack_require__(9);
-	
-	var _post = __webpack_require__(44);
-	
-	var PostController = _interopRequireWildcard(_post);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	var router = new _express.Router();
-	
-	// Get all Posts
-	router.route('/posts').get(PostController.getPosts);
-	
-	// Get one post by cuid
-	router.route('/posts/:cuid').get(PostController.getPost);
-	
-	// Add a new Post
-	router.route('/posts').post(PostController.addPost);
-	
-	// Delete a post by cuid
-	router.route('/posts/:cuid').delete(PostController.deletePost);
-	
-	exports.default = router;
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	exports.fetchComponentData = fetchComponentData;
 	
-	var _promiseUtils = __webpack_require__(46);
+	var _promiseUtils = __webpack_require__(44);
 	
 	function fetchComponentData(store, components, params) {
 	  var needs = components.reduce(function (prev, current) {
@@ -987,16 +835,16 @@
 	  */
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
 	
-	var webpack = __webpack_require__(11);
-	var cssnext = __webpack_require__(56);
-	var postcssFocus = __webpack_require__(57);
-	var postcssReporter = __webpack_require__(58);
+	var webpack = __webpack_require__(10);
+	var cssnext = __webpack_require__(54);
+	var postcssFocus = __webpack_require__(55);
+	var postcssReporter = __webpack_require__(56);
 	
 	module.exports = {
 	  devtool: 'cheap-module-eval-source-map',
@@ -1066,43 +914,43 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, ""))
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = require("body-parser");
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports) {
 
 	module.exports = require("compression");
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports) {
 
 	module.exports = require("path");
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-dom/server");
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = require("webpack-dev-middleware");
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports) {
 
 	module.exports = require("webpack-hot-middleware");
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1132,7 +980,7 @@
 	};
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1162,7 +1010,7 @@
 	};
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1189,11 +1037,11 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _reactHelmet = __webpack_require__(4);
+	var _reactHelmet = __webpack_require__(3);
 	
 	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
 	
-	var _DevTools = __webpack_require__(14);
+	var _DevTools = __webpack_require__(12);
 	
 	var _DevTools2 = _interopRequireDefault(_DevTools);
 	
@@ -1207,7 +1055,7 @@
 	
 	var _AppActions = __webpack_require__(5);
 	
-	var _IntlActions = __webpack_require__(15);
+	var _IntlActions = __webpack_require__(13);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1291,6 +1139,51 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
 
 /***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getShowAddPost = undefined;
+	
+	var _AppActions = __webpack_require__(5);
+	
+	// Initial State
+	var initialState = {
+	  showAddPost: false
+	}; // Import Actions
+	
+	
+	var AppReducer = function AppReducer() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _AppActions.TOGGLE_ADD_POST:
+	      return {
+	        showAddPost: !state.showAddPost
+	      };
+	
+	    default:
+	      return state;
+	  }
+	};
+	
+	/* Selectors */
+	
+	// Get showAddPost
+	var getShowAddPost = exports.getShowAddPost = function getShowAddPost(state) {
+	  return state.app.showAddPost;
+	};
+	
+	// Export Reducer
+	exports.default = AppReducer;
+
+/***/ },
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1367,7 +1260,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(4);
 	
 	var _reactIntl = __webpack_require__(1);
 	
@@ -1426,9 +1319,9 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _setup = __webpack_require__(12);
+	var _setup = __webpack_require__(11);
 	
-	var _IntlActions = __webpack_require__(15);
+	var _IntlActions = __webpack_require__(13);
 	
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 	
@@ -1482,11 +1375,11 @@
 	
 	var _reactIntl = __webpack_require__(1);
 	
-	var _reactDom = __webpack_require__(60);
+	var _reactDom = __webpack_require__(58);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _reactBootstrap = __webpack_require__(59);
+	var _reactBootstrap = __webpack_require__(57);
 	
 	var _PostCreateWidget = {
 	  "form": "_1HNxVmVCIfsWU6Q22cRSd7",
@@ -1496,12 +1389,14 @@
 	  "post-submit-button": "_2m9Bzr_sJcQ7FK3o3X0PBL",
 	  "appear": "_30KT3DYyUvGj_5sBYnixvw",
 	  "post-submit-button-right": "_3uOKgOlO1oRuTD4mhZRfzF",
+	  "post-submit-button-right-5": "_2EriuKfXTQZEN4XdjJCqyx",
 	  "right": "_10f_i5v1v9118pG4CEMlLU",
 	  "left": "heVE8tcYMU2dInRgPbPec",
 	  "right-bold": "_1TOCuN5YkSgi7i7F8IOXBi",
 	  "left-bold": "_3TuUoj_-kAJ40XQuP3ME8f",
 	  "probability-value-right": "_2SswK8BQptS7Z8HU9F9b_u",
-	  "bold": "_3nQ-uRCoNngPUNuP9qyUB3"
+	  "bold": "_3nQ-uRCoNngPUNuP9qyUB3",
+	  "ui": "XaMXl6hiLmsGFFRczLb-o"
 	};
 	
 	var _PostCreateWidget2 = _interopRequireDefault(_PostCreateWidget);
@@ -1516,8 +1411,7 @@
 	
 	// import monkeylearn from 'monkeylearn'
 	
-	var MonkeyLearn = __webpack_require__(55);
-	var AYLIENTextAPI = __webpack_require__(47);
+	var MonkeyLearn = __webpack_require__(53);
 	
 	// Import Style
 	
@@ -1541,7 +1435,6 @@
 	
 	    _this.topicModeling = function () {
 	      var contentRef = _this.refs.content;
-	      console.log("this.state.domain: ", _this.state.domain);
 	      if (contentRef.value) {
 	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
 	        var module_id = 'cl_hS9wMk9y';
@@ -1551,7 +1444,8 @@
 	        p.then(function (res) {
 	          self.setState({
 	            result: res.result[0],
-	            summary_text: ''
+	            summary_text: '',
+	            show_aspect_based: false
 	          });
 	        });
 	      }
@@ -1569,7 +1463,8 @@
 	        p.then(function (res) {
 	          self.setState({
 	            result: res.result[0],
-	            summary_text: ''
+	            summary_text: '',
+	            show_aspect_based: false
 	          });
 	        });
 	      }
@@ -1577,7 +1472,6 @@
 	
 	    _this.summary = function () {
 	      var contentRef = _this.refs.content;
-	
 	      if (contentRef.value) {
 	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
 	        var module_id = 'ex_94WD2XxD';
@@ -1587,25 +1481,24 @@
 	        p.then(function (res) {
 	          self.setState({
 	            summary_text: res.result[0]['parsed_value'],
-	            result: []
+	            result: [],
+	            show_aspect_based: false
 	          });
 	        });
 	      }
 	    };
 	
 	    _this.aspectBased = function () {
-	      var textapi = new AYLIENTextAPI({
-	        application_id: "d0610e54",
-	        application_key: "8e347bee6e64f01c958cd32738604d53"
-	      });
-	
-	      textapi.sentiment({
-	        'text': 'John is a very good football player!'
-	      }, function (error, response) {
-	        if (error === null) {
-	          console.log(response);
-	        }
-	      });
+	      var textRef = _this.refs.content;
+	      var domain = _this.state.domain;
+	      if (textRef.value && domain) {
+	        _this.setState({
+	          summary_text: '',
+	          result: [],
+	          show_aspect_based: true
+	        });
+	        _this.props.aspectBased(textRef.value, domain);
+	      }
 	    };
 	
 	    _this.selectDomain = _this.selectDomain.bind(_this);
@@ -1613,6 +1506,7 @@
 	    _this.state = {
 	      result: [],
 	      summary_text: '',
+	      show_aspect_based: false,
 	      domain: defaultDomain
 	    };
 	    return _this;
@@ -1637,7 +1531,6 @@
 	  }, {
 	    key: 'selectDomain',
 	    value: function selectDomain(e) {
-	      console.log("Select domain: ", e.target.value);
 	      this.setState({
 	        domain: e.target.value
 	      });
@@ -1645,7 +1538,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	
 	      var element = [];
 	      if (this.state.result.length > 0) {
 	        element.push(_jsx('div', {}, void 0, _jsx('span', {
@@ -1653,7 +1545,6 @@
 	        }, void 0, 'Label'), _jsx('span', {
 	          className: _PostCreateWidget2.default['right-bold']
 	        }, void 0, 'Probability'), '\u200B'));
-	
 	        for (var i = 0; i < this.state.result.length; i++) {
 	          element.push(_jsx('div', {}, void 0, _jsx('span', {
 	            className: _PostCreateWidget2.default['left']
@@ -1662,15 +1553,33 @@
 	          }, void 0, this.state.result[i]['probability']), '\u200B'));
 	        }
 	      };
-	
 	      if (this.state.summary_text.length > 0) {
 	        element.push(_jsx('div', {}, void 0, _jsx('span', {
 	          className: _PostCreateWidget2.default['left-bold']
 	        }, void 0, 'Summary'), '\u200B'));
-	
 	        element.push(_jsx('div', {}, void 0, _jsx('span', {}, void 0, this.state.summary_text), '\u200B'));
 	      };
 	
+	      if (this.props.data.length > 0 && this.state.show_aspect_based) {
+	        if (this.props.data[0]['aspects'].length > 0) {
+	          element.push(_jsx('div', {}, void 0, _jsx('span', {
+	            className: _PostCreateWidget2.default['left-bold']
+	          }, void 0, 'Aspect'), _jsx('span', {
+	            className: _PostCreateWidget2.default['right-bold']
+	          }, void 0, 'Polarity'), '\u200B'));
+	          for (var i = 0; i < this.props.data[0]['aspects'].length; i++) {
+	            element.push(_jsx('div', {}, void 0, _jsx('span', {
+	              className: _PostCreateWidget2.default['left']
+	            }, void 0, this.props.data[0]['aspects'][i]['aspect'], _jsx('b', {
+	              className: _PostCreateWidget2.default['ui']
+	            }, void 0, ' ', this.props.data[0]['aspects'][i]['aspect_confidence'].toFixed(2), ' ')), _jsx('span', {
+	              className: _PostCreateWidget2.default['probability-value-right']
+	            }, void 0, this.props.data[0]['aspects'][i]['polarity'], _jsx('b', {
+	              className: _PostCreateWidget2.default['ui']
+	            }, void 0, ' ', this.props.data[0]['aspects'][i]['polarity_confidence'].toFixed(2), ' ')), '\u200B'));
+	          }
+	        }
+	      }
 	      return _jsx('div', {}, void 0, _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
 	        className: 'show-grid'
 	      }, void 0, _jsx(_reactBootstrap.Col, {
@@ -1699,7 +1608,7 @@
 	        onClick: this.summary,
 	        href: '#'
 	      }, void 0, 'Summary text'), _jsx('a', {
-	        className: _PostCreateWidget2.default['post-submit-button-right'],
+	        className: _PostCreateWidget2.default['post-submit-button-right-5'],
 	        onClick: this.aspectBased,
 	        href: '#'
 	      }, void 0, 'Aspect-Based'))), _jsx(_reactBootstrap.Col, {
@@ -1731,123 +1640,13 @@
 	  value: true
 	});
 	
-	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
+	var _redux = __webpack_require__(18);
 	
-	// Import Components
-	
-	
-	var _react = __webpack_require__(0);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _PostListItem = __webpack_require__(41);
-	
-	var _PostListItem2 = _interopRequireDefault(_PostListItem);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function PostList(props) {
-	  return _jsx('div', {
-	    className: 'listView'
-	  }, void 0, props.posts.map(function (post) {
-	    return _jsx(_PostListItem2.default, {
-	      post: post,
-	      onDelete: function onDelete() {
-	        return props.handleDeletePost(post.cuid);
-	      }
-	    }, post.cuid);
-	  }));
-	}
-	
-	exports.default = PostList;
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
-	
-	// Import Style
-	
-	
-	var _react = __webpack_require__(0);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(3);
-	
-	var _reactIntl = __webpack_require__(1);
-	
-	var _PostListItem = {
-	  "single-post": "_3B15Q62CNe0LaxJ8BUZr5W",
-	  "post-title": "_3mZF-WLrnBUxaWr9zFi6Q_",
-	  "author-name": "_1cSDPptMi8rvUEB2tAonlW",
-	  "post-desc": "_3D8Fgk2edKTkFyBDsUEZ2u",
-	  "post-action": "_3S84cKmlvGO49pK1biPlXr",
-	  "divider": "y2SIF3ydn02JYMgeklO7S",
-	  "post-detail": "_3W9vrxIdnQ93EmH-x2UgJR"
-	};
-	
-	var _PostListItem2 = _interopRequireDefault(_PostListItem);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var _ref = _jsx(_reactIntl.FormattedMessage, {
-	  id: 'by'
-	});
-	
-	var _ref2 = _jsx(_reactIntl.FormattedMessage, {
-	  id: 'deletePost'
-	});
-	
-	function PostListItem(props) {
-	  return _jsx('div', {
-	    className: _PostListItem2.default['single-post']
-	  }, void 0, _jsx('h3', {
-	    className: _PostListItem2.default['post-title']
-	  }, void 0, _jsx(_reactRouter.Link, {
-	    to: '/posts/' + props.post.slug + '-' + props.post.cuid
-	  }, void 0, props.post.title)), _jsx('p', {
-	    className: _PostListItem2.default['author-name']
-	  }, void 0, _ref, ' ', props.post.name), _jsx('p', {
-	    className: _PostListItem2.default['post-desc']
-	  }, void 0, props.post.content), _jsx('p', {
-	    className: _PostListItem2.default['post-action']
-	  }, void 0, _jsx('a', {
-	    href: '#',
-	    onClick: props.onDelete
-	  }, void 0, _ref2)), _jsx('hr', {
-	    className: _PostListItem2.default.divider
-	  }));
-	}
-	
-	exports.default = PostListItem;
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _redux = __webpack_require__(19);
-	
-	var _AppReducer = __webpack_require__(13);
+	var _AppReducer = __webpack_require__(35);
 	
 	var _AppReducer2 = _interopRequireDefault(_AppReducer);
 	
-	var _PostReducer = __webpack_require__(7);
+	var _PostReducer = __webpack_require__(14);
 	
 	var _PostReducer2 = _interopRequireDefault(_PostReducer);
 	
@@ -1870,7 +1669,7 @@
 	// Import Reducers
 
 /***/ },
-/* 43 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1882,11 +1681,11 @@
 	exports.API_URL = undefined;
 	exports.default = callApi;
 	
-	var _isomorphicFetch = __webpack_require__(53);
+	var _isomorphicFetch = __webpack_require__(51);
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
-	var _config = __webpack_require__(8);
+	var _config = __webpack_require__(7);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
@@ -1923,7 +1722,7 @@
 	}
 
 /***/ },
-/* 44 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1933,27 +1732,30 @@
 	  value: true
 	});
 	exports.getPosts = getPosts;
+	exports.aspectsBased = aspectsBased;
 	exports.addPost = addPost;
 	exports.getPost = getPost;
 	exports.deletePost = deletePost;
 	
-	var _post = __webpack_require__(18);
+	var _post = __webpack_require__(17);
 	
 	var _post2 = _interopRequireDefault(_post);
 	
-	var _cuid = __webpack_require__(48);
+	var _cuid = __webpack_require__(46);
 	
 	var _cuid2 = _interopRequireDefault(_cuid);
 	
-	var _limax = __webpack_require__(54);
+	var _limax = __webpack_require__(52);
 	
 	var _limax2 = _interopRequireDefault(_limax);
 	
-	var _sanitizeHtml = __webpack_require__(67);
+	var _sanitizeHtml = __webpack_require__(65);
 	
 	var _sanitizeHtml2 = _interopRequireDefault(_sanitizeHtml);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AYLIENTextAPI = __webpack_require__(45);
 	
 	/**
 	 * Get all posts
@@ -1967,6 +1769,34 @@
 	      res.status(500).send(err);
 	    }
 	    res.json({ posts: posts });
+	  });
+	}
+	
+	/**
+	 * Get all posts
+	 * @param req
+	 * @param res
+	 * @returns void
+	 */
+	function aspectsBased(req, res) {
+	  console.log("req.body.query: ", req.body.query);
+	  if (!req.body.query.text || !req.body.query.domain) {
+	    res.status(403).end();
+	  }
+	
+	  var textapi = new AYLIENTextAPI({
+	    application_id: "d0610e54",
+	    application_key: "8e347bee6e64f01c958cd32738604d53"
+	  });
+	
+	  textapi.aspectBasedSentiment({
+	    'domain': req.body.query.domain,
+	    'text': req.body.query.text
+	  }, function (err, response) {
+	    if (err === null) {
+	      console.log("response: ", response);
+	      res.json({ "aspectBased": response });
+	    }
 	  });
 	}
 	
@@ -2032,7 +1862,7 @@
 	}
 
 /***/ },
-/* 45 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2047,47 +1877,47 @@
 	// Webpack Requirements
 	
 	
-	var _express = __webpack_require__(9);
+	var _express = __webpack_require__(8);
 	
 	var _express2 = _interopRequireDefault(_express);
 	
-	var _compression = __webpack_require__(28);
+	var _compression = __webpack_require__(27);
 	
 	var _compression2 = _interopRequireDefault(_compression);
 	
-	var _mongoose = __webpack_require__(10);
+	var _mongoose = __webpack_require__(9);
 	
 	var _mongoose2 = _interopRequireDefault(_mongoose);
 	
-	var _bodyParser = __webpack_require__(27);
+	var _bodyParser = __webpack_require__(26);
 	
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
 	
-	var _path = __webpack_require__(29);
+	var _path = __webpack_require__(28);
 	
 	var _path2 = _interopRequireDefault(_path);
 	
-	var _IntlWrapper = __webpack_require__(20);
+	var _IntlWrapper = __webpack_require__(19);
 	
 	var _IntlWrapper2 = _interopRequireDefault(_IntlWrapper);
 	
-	var _webpack = __webpack_require__(11);
+	var _webpack = __webpack_require__(10);
 	
 	var _webpack2 = _interopRequireDefault(_webpack);
 	
-	var _webpackConfig = __webpack_require__(26);
+	var _webpackConfig = __webpack_require__(25);
 	
 	var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
 	
-	var _webpackDevMiddleware = __webpack_require__(31);
+	var _webpackDevMiddleware = __webpack_require__(30);
 	
 	var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
 	
-	var _webpackHotMiddleware = __webpack_require__(32);
+	var _webpackHotMiddleware = __webpack_require__(31);
 	
 	var _webpackHotMiddleware2 = _interopRequireDefault(_webpackHotMiddleware);
 	
-	var _store = __webpack_require__(22);
+	var _store = __webpack_require__(21);
 	
 	var _reactRedux = __webpack_require__(2);
 	
@@ -2095,29 +1925,29 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _server = __webpack_require__(30);
+	var _server = __webpack_require__(29);
 	
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(4);
 	
-	var _reactHelmet = __webpack_require__(4);
+	var _reactHelmet = __webpack_require__(3);
 	
 	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
 	
-	var _routes = __webpack_require__(21);
+	var _routes = __webpack_require__(20);
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _fetchData = __webpack_require__(25);
+	var _fetchData = __webpack_require__(24);
 	
-	var _post = __webpack_require__(24);
+	var _post = __webpack_require__(23);
 	
 	var _post2 = _interopRequireDefault(_post);
 	
-	var _dummyData = __webpack_require__(23);
+	var _dummyData = __webpack_require__(22);
 	
 	var _dummyData2 = _interopRequireDefault(_dummyData);
 	
-	var _config = __webpack_require__(8);
+	var _config = __webpack_require__(7);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
@@ -2222,7 +2052,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, "server"))
 
 /***/ },
-/* 46 */
+/* 44 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2253,127 +2083,127 @@
 	}
 
 /***/ },
-/* 47 */
+/* 45 */
 /***/ function(module, exports) {
 
 	module.exports = require("aylien_textapi");
 
 /***/ },
-/* 48 */
+/* 46 */
 /***/ function(module, exports) {
 
 	module.exports = require("cuid");
 
 /***/ },
-/* 49 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = require("intl");
 
 /***/ },
-/* 50 */
+/* 48 */
 /***/ function(module, exports) {
 
 	module.exports = require("intl-locales-supported");
 
 /***/ },
-/* 51 */
+/* 49 */
 /***/ function(module, exports) {
 
 	module.exports = require("intl/locale-data/jsonp/en");
 
 /***/ },
-/* 52 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = require("intl/locale-data/jsonp/fr");
 
 /***/ },
-/* 53 */
+/* 51 */
 /***/ function(module, exports) {
 
 	module.exports = require("isomorphic-fetch");
 
 /***/ },
-/* 54 */
+/* 52 */
 /***/ function(module, exports) {
 
 	module.exports = require("limax");
 
 /***/ },
-/* 55 */
+/* 53 */
 /***/ function(module, exports) {
 
 	module.exports = require("monkeylearn");
 
 /***/ },
-/* 56 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = require("postcss-cssnext");
 
 /***/ },
-/* 57 */
+/* 55 */
 /***/ function(module, exports) {
 
 	module.exports = require("postcss-focus");
 
 /***/ },
-/* 58 */
+/* 56 */
 /***/ function(module, exports) {
 
 	module.exports = require("postcss-reporter");
 
 /***/ },
-/* 59 */
+/* 57 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-bootstrap");
 
 /***/ },
-/* 60 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-dom");
 
 /***/ },
-/* 61 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-intl/locale-data/en");
 
 /***/ },
-/* 62 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-intl/locale-data/fr");
 
 /***/ },
-/* 63 */
+/* 61 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-devtools");
 
 /***/ },
-/* 64 */
+/* 62 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-devtools-dock-monitor");
 
 /***/ },
-/* 65 */
+/* 63 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-devtools-log-monitor");
 
 /***/ },
-/* 66 */
+/* 64 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-thunk");
 
 /***/ },
-/* 67 */
+/* 65 */
 /***/ function(module, exports) {
 
 	module.exports = require("sanitize-html");

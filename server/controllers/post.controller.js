@@ -3,6 +3,8 @@ import cuid from 'cuid';
 import slug from 'limax';
 import sanitizeHtml from 'sanitize-html';
 
+var AYLIENTextAPI = require('aylien_textapi');
+
 /**
  * Get all posts
  * @param req
@@ -15,6 +17,34 @@ export function getPosts(req, res) {
       res.status(500).send(err);
     }
     res.json({ posts });
+  });
+}
+
+/**
+ * Get all posts
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function aspectsBased(req, res) {
+  console.log("req.body.query: ", req.body.query)
+  if (!req.body.query.text || !req.body.query.domain) {
+    res.status(403).end();
+  }
+
+  var textapi = new AYLIENTextAPI({
+    application_id: "d0610e54",
+    application_key: "8e347bee6e64f01c958cd32738604d53"
+  });
+
+  textapi.aspectBasedSentiment({
+    'domain': req.body.query.domain,
+    'text': req.body.query.text
+  }, function(err, response) {
+    if (err === null) {
+      console.log("response: ", response)
+      res.json({"aspectBased": response})
+    }
   });
 }
 
