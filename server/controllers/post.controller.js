@@ -5,20 +5,15 @@ import sanitizeHtml from 'sanitize-html';
 
 var AYLIENTextAPI = require('aylien_textapi');
 
-/**
- * Get all posts
- * @param req
- * @param res
- * @returns void
- */
-export function getPosts(req, res) {
-  Post.find().sort('-dateAdded').exec((err, posts) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    res.json({ posts });
-  });
-}
+var express = require('express');
+var app = express();
+var path = require('path');
+var formidable = require('formidable');
+var fs = require('fs');
+
+var download = require('download-file')
+
+var MonkeyLearn = require('monkeylearn');
 
 /**
  * Get all posts
@@ -45,66 +40,5 @@ export function aspectsBased(req, res) {
       console.log("response: ", response)
       res.json({"aspectBased": response})
     }
-  });
-}
-
-/**
- * Save a post
- * @param req
- * @param res
- * @returns void
- */
-export function addPost(req, res) {
-  if (!req.body.post.name || !req.body.post.title || !req.body.post.content) {
-    res.status(403).end();
-  }
-
-  const newPost = new Post(req.body.post);
-
-  // Let's sanitize inputs
-  newPost.title = sanitizeHtml(newPost.title);
-  newPost.name = sanitizeHtml(newPost.name);
-  newPost.content = sanitizeHtml(newPost.content);
-
-  newPost.slug = slug(newPost.title.toLowerCase(), { lowercase: true });
-  newPost.cuid = cuid();
-  newPost.save((err, saved) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    res.json({ post: saved });
-  });
-}
-
-/**
- * Get a single post
- * @param req
- * @param res
- * @returns void
- */
-export function getPost(req, res) {
-  Post.findOne({ cuid: req.params.cuid }).exec((err, post) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    res.json({ post });
-  });
-}
-
-/**
- * Delete a post
- * @param req
- * @param res
- * @returns void
- */
-export function deletePost(req, res) {
-  Post.findOne({ cuid: req.params.cuid }).exec((err, post) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-
-    post.remove(() => {
-      res.status(200).end();
-    });
   });
 }

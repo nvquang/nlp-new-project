@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import ReactDOM from 'react-dom'
 import { Grid, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
+import {CSVDownload, CSVLink} from 'react-csv';
 // import monkeylearn from 'monkeylearn'
 
 var MonkeyLearn = require('monkeylearn');
@@ -21,7 +23,9 @@ export class PostCreateWidget extends Component {
       result: [],
       summary_text: '',
       show_aspect_based: false,
-      domain: defaultDomain
+      domain: defaultDomain,
+      current_file_name: '',
+      download_data: []
     };
   }
 
@@ -54,14 +58,30 @@ export class PostCreateWidget extends Component {
       var module_id = 'cl_hS9wMk9y';
       var text_list = [contentRef.value];
       var p = ml.classifiers.classify(module_id, text_list, false);
-      let self = this
+      let self = this;
       p.then(function (res) {
           self.setState({
             result: res.result[0],
             summary_text: '',
             show_aspect_based: false,
+            download_data: []
           })
       });
+    } else if (this.state.current_file_name){
+      let self = this;
+      axios.get('https://python-nlp-api.herokuapp.com/topic_modeling?filename=' + this.state.current_file_name)
+         .then( (response_value) => {
+           console.log("response: ", response_value.data.result);
+            self.setState({
+                result: [],
+                summary_text: '',
+                show_aspect_based: false,
+                download_data: response_value.data.result
+            });
+         })
+         .catch( (error) => {
+           console.log(error);
+         });
     }
   };
 
@@ -79,6 +99,7 @@ export class PostCreateWidget extends Component {
             result: res.result[0],
             summary_text: '',
             show_aspect_based: false,
+            download_data: []
           })
       });
     }
@@ -97,6 +118,7 @@ export class PostCreateWidget extends Component {
             summary_text: res.result[0]['parsed_value'],
             result: [],
             show_aspect_based: false,
+            download_data: []
           })
       });
     }
@@ -110,10 +132,43 @@ export class PostCreateWidget extends Component {
         summary_text: '',
         result: [],
         show_aspect_based: true,
+        download_data: []
       })
       this.props.aspectBased(textRef.value, domain)
     }
   };
+
+
+  uploadFile = () => {
+    if (this.refs.my_file){
+      var file = $('#upload-input').get(0).files[0]
+
+      if (file){
+        this.refs.content.value = ''
+
+        var formData = new FormData();
+        formData.append('uploads_file', file, file.name);
+
+        let self = this
+        $.ajax({
+          url: 'https://python-nlp-api.herokuapp.com/uploads',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response){
+              console.log('upload successful!\n' + response.filename);
+              self.setState({
+                  current_file_name: response.filename,
+                  result: [],
+                  summary_text: '',
+                  show_aspect_based: false,
+              })
+          }
+        });
+      }
+    }
+  }
 
   render() {
     let element = []
@@ -134,7 +189,6 @@ export class PostCreateWidget extends Component {
       element.push(<div><span className={styles['left-bold']}>Summary</span>​</div>);
       element.push(<div><span>{this.state.summary_text}</span>​</div>);
     };
-
     if (this.props.data.length > 0 && this.state.show_aspect_based) {
       if (this.props.data[0]['aspects'].length > 0){
         element.push(<div>
@@ -156,21 +210,43 @@ export class PostCreateWidget extends Component {
         }
       }
     }
+    if (this.state.download_data.length > 0){
+      console.log("this.state.download_data: ", this.state.download_data)
+      var headers = [
+         {label: 'Text', key: 'string'},
+         {label: 'Topic 0', key: 'topic_0_name'},
+         {label: 'Topic 0 probability', key: 'topic_0_proba'},
+         {label: 'Topic 1', key: 'topic_1_name'},
+         {label: 'Topic 1 probability', key: 'topic_1_proba'},
+         {label: 'Topic 2', key: 'topic_2_name'},
+         {label: 'Topic 2 probability', key: 'topic_2_proba'}];
+      element.push(<CSVLink data={this.state.download_data}
+            headers={headers}
+            filename={"my-file.csv"}
+            className="btn btn-primary"
+            target="_blank">
+              Download me
+          </CSVLink>);
+    }
     return (
       <div>
         <Grid>
               <Row className="show-grid">
                   <Col xs={6} md={6}>
                     <div className={styles['form-content']}>
-                      <h2 className={styles['form-title']}>Your text</h2>
+                      <h2 className={styles['form-title']}>Upload CSV file</h2>
+                      <input className={styles['form-field']} id="upload-input" type="file" name="uploads" ref="my_file" onChange={this.uploadFile}/>
+                      <h2 className={styles['form-title']}>OR insert text </h2>
                       <textarea placeholder="Please insert your text" className={styles['form-field']} ref="content" />
                       <h2 className={styles['form-title']}>Text domain</h2>
                       <select className={styles['form-field']} value={this.state.domain} onChange={this.selectDomain}>
                         <option key="restaurants" value="restaurants" >Restaurant</option>
                         <option key="hotels" value="hotels">Hotels</option>
                       </select>
-                      <a className={styles['post-submit-button']} onClick={this.summary} href="#">Summary text</a>
-                      <a className={styles['post-submit-button-right']} onClick={this.aspectBased} href="#">Aspect-Based</a>
+                      <a className={styles['post-submit-button']} onClick={this.topicModeling} href="#">Topic extracter</a>
+                      <a className={styles['post-submit-button-right']} onClick={this.sentimentClassify} href="#">Classify</a>
+                      <a className={styles['post-submit-button-right']} onClick={this.summary} href="#">Summary text</a>
+                      <a className={styles['post-submit-button-right-5']} onClick={this.aspectBased} href="#">Aspect based analysis</a>
                     </div>
                   </Col>
                   <Col xs={6} md={6}>

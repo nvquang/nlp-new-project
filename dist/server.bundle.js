@@ -1596,13 +1596,21 @@
 	        onChange: this.selectDomain
 	      }, void 0, _ref, _ref2), _jsx('a', {
 	        className: _PostCreateWidget2.default['post-submit-button'],
+	        onClick: this.topicModeling,
+	        href: '#'
+	      }, void 0, 'Topic extracter'), _jsx('a', {
+	        className: _PostCreateWidget2.default['post-submit-button-right'],
+	        onClick: this.sentimentClassify,
+	        href: '#'
+	      }, void 0, 'Classify'), _jsx('a', {
+	        className: _PostCreateWidget2.default['post-submit-button-right'],
 	        onClick: this.summary,
 	        href: '#'
 	      }, void 0, 'Summary text'), _jsx('a', {
-	        className: _PostCreateWidget2.default['post-submit-button-right'],
+	        className: _PostCreateWidget2.default['post-submit-button-right-5'],
 	        onClick: this.aspectBased,
 	        href: '#'
-	      }, void 0, 'Aspect-Based'))), _jsx(_reactBootstrap.Col, {
+	      }, void 0, 'Aspect based analysis'))), _jsx(_reactBootstrap.Col, {
 	        xs: 6,
 	        md: 6
 	      }, void 0, _jsx('div', {

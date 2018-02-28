@@ -17,7 +17,6 @@ class PostListPage extends Component {
   };
 
   render() {
-    console.log("ben cai listpage", this.props.data)
     return (
       <div>
         <PostCreateWidget aspectBased={this.handleAspectBased} data={this.props.data}/>
