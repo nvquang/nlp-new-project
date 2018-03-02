@@ -25,7 +25,8 @@ export class PostCreateWidget extends Component {
       show_aspect_based: false,
       domain: defaultDomain,
       current_file_name: '',
-      download_data: []
+      sentiment_data: [],
+      classify_data: []
     };
   }
 
@@ -64,7 +65,8 @@ export class PostCreateWidget extends Component {
             result: res.result[0],
             summary_text: '',
             show_aspect_based: false,
-            download_data: []
+            sentiment_data: [],
+            classify_data: []
           })
       });
     } else if (this.state.current_file_name){
@@ -76,7 +78,8 @@ export class PostCreateWidget extends Component {
                 result: [],
                 summary_text: '',
                 show_aspect_based: false,
-                download_data: response_value.data.result
+                sentiment_data: response_value.data.result,
+                classify_data: []
             });
          })
          .catch( (error) => {
@@ -99,9 +102,26 @@ export class PostCreateWidget extends Component {
             result: res.result[0],
             summary_text: '',
             show_aspect_based: false,
-            download_data: []
+            sentiment_data: [],
+            classify_data: []
           })
       });
+    } else if (this.state.current_file_name){
+      let self = this;
+      axios.get('https://python-nlp-api.herokuapp.com/classify?filename=' + this.state.current_file_name)
+         .then( (response_value) => {
+           console.log("response: ", response_value.data.result);
+            self.setState({
+                result: [],
+                summary_text: '',
+                show_aspect_based: false,
+                sentiment_data: [],
+                classify_data: response_value.data.result
+            });
+         })
+         .catch( (error) => {
+           console.log(error);
+         });
     }
   };
 
@@ -118,7 +138,8 @@ export class PostCreateWidget extends Component {
             summary_text: res.result[0]['parsed_value'],
             result: [],
             show_aspect_based: false,
-            download_data: []
+            sentiment_data: [],
+            classify_data: []
           })
       });
     }
@@ -132,7 +153,8 @@ export class PostCreateWidget extends Component {
         summary_text: '',
         result: [],
         show_aspect_based: true,
-        download_data: []
+        sentiment_data: [],
+        classify_data: []
       })
       this.props.aspectBased(textRef.value, domain)
     }
@@ -210,8 +232,8 @@ export class PostCreateWidget extends Component {
         }
       }
     }
-    if (this.state.download_data.length > 0){
-      console.log("this.state.download_data: ", this.state.download_data)
+    if (this.state.sentiment_data.length > 0){
+      console.log("this.state.sentiment_data: ", this.state.sentiment_data)
       var headers = [
          {label: 'Text', key: 'string'},
          {label: 'Topic 0', key: 'topic_0_name'},
@@ -220,12 +242,27 @@ export class PostCreateWidget extends Component {
          {label: 'Topic 1 probability', key: 'topic_1_proba'},
          {label: 'Topic 2', key: 'topic_2_name'},
          {label: 'Topic 2 probability', key: 'topic_2_proba'}];
-      element.push(<CSVLink data={this.state.download_data}
+      element.push(<CSVLink data={this.state.sentiment_data}
             headers={headers}
-            filename={"my-file.csv"}
+            filename={"sentiment_data.csv"}
             className="btn btn-primary"
             target="_blank">
-              Download me
+              Download
+          </CSVLink>);
+
+    }
+
+    if (this.state.classify_data.length > 0){
+      console.log("this.state.classify_data: ", this.state.classify_data)
+      var headers = [
+         {label: 'Text', key: 'string'},
+         {label: 'Polarity', key: 'polarity'}];
+      element.push(<CSVLink data={this.state.classify_data}
+            headers={headers}
+            filename={"classify_data.csv"}
+            className="btn btn-primary"
+            target="_blank">
+              Download
           </CSVLink>);
     }
     return (

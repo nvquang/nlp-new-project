@@ -1456,7 +1456,8 @@
 	            result: res.result[0],
 	            summary_text: '',
 	            show_aspect_based: false,
-	            download_data: []
+	            sentiment_data: [],
+	            classify_data: []
 	          });
 	        });
 	      } else if (_this.state.current_file_name) {
@@ -1467,7 +1468,8 @@
 	            result: [],
 	            summary_text: '',
 	            show_aspect_based: false,
-	            download_data: response_value.data.result
+	            sentiment_data: response_value.data.result,
+	            classify_data: []
 	          });
 	        }).catch(function (error) {
 	          console.log(error);
@@ -1489,8 +1491,23 @@
 	            result: res.result[0],
 	            summary_text: '',
 	            show_aspect_based: false,
-	            download_data: []
+	            sentiment_data: [],
+	            classify_data: []
 	          });
+	        });
+	      } else if (_this.state.current_file_name) {
+	        var _self2 = _this;
+	        _axios2.default.get('https://python-nlp-api.herokuapp.com/classify?filename=' + _this.state.current_file_name).then(function (response_value) {
+	          console.log("response: ", response_value.data.result);
+	          _self2.setState({
+	            result: [],
+	            summary_text: '',
+	            show_aspect_based: false,
+	            sentiment_data: [],
+	            classify_data: response_value.data.result
+	          });
+	        }).catch(function (error) {
+	          console.log(error);
 	        });
 	      }
 	    };
@@ -1508,7 +1525,8 @@
 	            summary_text: res.result[0]['parsed_value'],
 	            result: [],
 	            show_aspect_based: false,
-	            download_data: []
+	            sentiment_data: [],
+	            classify_data: []
 	          });
 	        });
 	      }
@@ -1522,7 +1540,8 @@
 	          summary_text: '',
 	          result: [],
 	          show_aspect_based: true,
-	          download_data: []
+	          sentiment_data: [],
+	          classify_data: []
 	        });
 	        _this.props.aspectBased(textRef.value, domain);
 	      }
@@ -1567,7 +1586,8 @@
 	      show_aspect_based: false,
 	      domain: defaultDomain,
 	      current_file_name: '',
-	      download_data: []
+	      sentiment_data: [],
+	      classify_data: []
 	    };
 	    return _this;
 	  }
@@ -1639,16 +1659,28 @@
 	          }
 	        }
 	      }
-	      if (this.state.download_data.length > 0) {
-	        console.log("this.state.download_data: ", this.state.download_data);
+	      if (this.state.sentiment_data.length > 0) {
+	        console.log("this.state.sentiment_data: ", this.state.sentiment_data);
 	        var headers = [{ label: 'Text', key: 'string' }, { label: 'Topic 0', key: 'topic_0_name' }, { label: 'Topic 0 probability', key: 'topic_0_proba' }, { label: 'Topic 1', key: 'topic_1_name' }, { label: 'Topic 1 probability', key: 'topic_1_proba' }, { label: 'Topic 2', key: 'topic_2_name' }, { label: 'Topic 2 probability', key: 'topic_2_proba' }];
 	        element.push(_jsx(_reactCsv.CSVLink, {
-	          data: this.state.download_data,
+	          data: this.state.sentiment_data,
 	          headers: headers,
-	          filename: "my-file.csv",
+	          filename: "sentiment_data.csv",
 	          className: 'btn btn-primary',
 	          target: '_blank'
-	        }, void 0, 'Download me'));
+	        }, void 0, 'Download'));
+	      }
+	
+	      if (this.state.classify_data.length > 0) {
+	        console.log("this.state.classify_data: ", this.state.classify_data);
+	        var headers = [{ label: 'Text', key: 'string' }, { label: 'Polarity', key: 'polarity' }];
+	        element.push(_jsx(_reactCsv.CSVLink, {
+	          data: this.state.classify_data,
+	          headers: headers,
+	          filename: "classify_data.csv",
+	          className: 'btn btn-primary',
+	          target: '_blank'
+	        }, void 0, 'Download'));
 	      }
 	      return _jsx('div', {}, void 0, _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
 	        className: 'show-grid'
