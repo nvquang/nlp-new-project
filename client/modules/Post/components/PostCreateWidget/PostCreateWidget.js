@@ -93,6 +93,7 @@ export class PostCreateWidget extends Component {
            console.log(error);
          });
     } else {
+      console.log("hererere")
       this.setState({
             show_alert: true
       });

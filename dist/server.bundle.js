@@ -1489,6 +1489,11 @@
 	        }).catch(function (error) {
 	          console.log(error);
 	        });
+	      } else {
+	        console.log("hererere");
+	        _this.setState({
+	          show_alert: true
+	        });
 	      }
 	    };
 	
@@ -1526,6 +1531,10 @@
 	        }).catch(function (error) {
 	          console.log(error);
 	        });
+	      } else {
+	        _this.setState({
+	          show_alert: true
+	        });
 	      }
 	    };
 	
@@ -1548,7 +1557,6 @@
 	          });
 	        });
 	      } else {
-	        console.log("Here");
 	        _this.setState({
 	          show_alert: true
 	        });
@@ -1987,7 +1995,6 @@
 	 * @returns void
 	 */
 	function aspectsBased(req, res) {
-	  console.log("req.body.query: ", req.body.query);
 	  if (!req.body.query.text || !req.body.query.domain) {
 	    res.status(403).end();
 	  }
@@ -2002,7 +2009,6 @@
 	    'text': req.body.query.text
 	  }, function (err, response) {
 	    if (err === null) {
-	      console.log("response: ", response);
 	      res.json({ "aspectBased": response });
 	    }
 	  });
