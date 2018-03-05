@@ -8,6 +8,9 @@ import {CSVDownload, CSVLink} from 'react-csv';
 
 var MonkeyLearn = require('monkeylearn');
 
+import ReactTable from 'react-table'
+// import 'react-table/react-table.css'
+
 
 // Import Style
 import styles from './PostCreateWidget.css';
@@ -160,7 +163,6 @@ export class PostCreateWidget extends Component {
     }
   };
 
-
   uploadFile = () => {
     if (this.refs.my_file){
       var file = $('#upload-input').get(0).files[0]
@@ -190,6 +192,10 @@ export class PostCreateWidget extends Component {
         });
       }
     }
+  }
+
+  handleClick = () => {
+      ReactDOM.findDOMNode(this.refs.my_file).value = "";
   }
 
   render() {
@@ -242,29 +248,85 @@ export class PostCreateWidget extends Component {
          {label: 'Topic 1 probability', key: 'topic_1_proba'},
          {label: 'Topic 2', key: 'topic_2_name'},
          {label: 'Topic 2 probability', key: 'topic_2_proba'}];
+
+       const columns = [{
+         Header: 'Text',
+         accessor: 'string' // String-based value accessors!
+       }, {
+         Header: 'Topic 0',
+         accessor: 'topic_0_name',
+       }, {
+         Header: 'Topic 0 Percentage',
+         accessor: 'topic_0_proba',
+         Cell: props => <span className='number'>{Number((props.value).toFixed(1))}</span> // Custom cell components!
+       },{
+         Header: 'Topic 1',
+         accessor: 'topic_1_name',
+       }, {
+         Header: 'Topic 1 Percentage',
+         accessor: 'topic_1_proba',
+         Cell: props => <span className='number'>{Number((props.value).toFixed(1))}</span> // Custom cell components!
+       }, {
+         Header: 'Topic 2',
+         accessor: 'topic_2_name',
+       }, {
+         Header: 'Topic 2 Percentage',
+         accessor: 'topic_2_proba',
+         Cell: props => <span className='number'>{Number((props.value).toFixed(1))}</span> // Custom cell components!
+       }];
+
       element.push(<CSVLink data={this.state.sentiment_data}
             headers={headers}
             filename={"sentiment_data.csv"}
             className="btn btn-primary"
             target="_blank">
-              Download
+              Download result
           </CSVLink>);
 
-    }
+      element.push(<br/>)
 
+      element.push(<ReactTable
+          defaultPageSize={10}
+          className="-striped -highlight"
+          data={this.state.sentiment_data}
+          columns={columns}/>)
+
+      this.handleClick();
+
+    }
     if (this.state.classify_data.length > 0){
       console.log("this.state.classify_data: ", this.state.classify_data)
       var headers = [
          {label: 'Text', key: 'string'},
          {label: 'Polarity', key: 'polarity'}];
+
+         const columns = [{
+           Header: 'Text',
+           accessor: 'string',
+           minWidth: 350
+         }, {
+           Header: 'Polarity',
+           accessor: 'polarity',
+         }];
       element.push(<CSVLink data={this.state.classify_data}
             headers={headers}
             filename={"classify_data.csv"}
             className="btn btn-primary"
             target="_blank">
-              Download
+              Download result
           </CSVLink>);
+
+      element.push(<br/>)
+
+      element.push(<ReactTable
+            defaultPageSize={10}
+            className="-striped -highlight"
+            data={this.state.classify_data}
+            columns={columns}/>)
+      this.handleClick();
     }
+
+
     return (
       <div>
         <Grid>

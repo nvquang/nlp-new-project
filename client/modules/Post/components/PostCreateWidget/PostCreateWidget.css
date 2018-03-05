@@ -107,3 +107,7 @@ textarea {
   color: rgba(0,0,0,.87);
   box-shadow: none;
 }
+
+.margin-botton {
+  margin-bottom: 5px
+}

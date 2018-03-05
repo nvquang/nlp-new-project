@@ -297,13 +297,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxDevtools = __webpack_require__(66);
+	var _reduxDevtools = __webpack_require__(67);
 	
-	var _reduxDevtoolsLogMonitor = __webpack_require__(68);
+	var _reduxDevtoolsLogMonitor = __webpack_require__(69);
 	
 	var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 	
-	var _reduxDevtoolsDockMonitor = __webpack_require__(67);
+	var _reduxDevtoolsDockMonitor = __webpack_require__(68);
 	
 	var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 	
@@ -711,7 +711,7 @@
 	
 	var _redux = __webpack_require__(20);
 	
-	var _reduxThunk = __webpack_require__(69);
+	var _reduxThunk = __webpack_require__(70);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
@@ -1391,6 +1391,10 @@
 	
 	var _reactCsv = __webpack_require__(62);
 	
+	var _reactTable = __webpack_require__(66);
+	
+	var _reactTable2 = _interopRequireDefault(_reactTable);
+	
 	var _PostCreateWidget = {
 	  "form": "_1HNxVmVCIfsWU6Q22cRSd7",
 	  "form-content": "VlHIHfXe5nkoruuc0N8pJ",
@@ -1406,7 +1410,8 @@
 	  "left-bold": "_3TuUoj_-kAJ40XQuP3ME8f",
 	  "probability-value-right": "_2SswK8BQptS7Z8HU9F9b_u",
 	  "bold": "_3nQ-uRCoNngPUNuP9qyUB3",
-	  "ui": "XaMXl6hiLmsGFFRczLb-o"
+	  "ui": "XaMXl6hiLmsGFFRczLb-o",
+	  "margin-botton": "_3EYJWQ9hbO8_lYkCnLaaQ3"
 	};
 	
 	var _PostCreateWidget2 = _interopRequireDefault(_PostCreateWidget);
@@ -1422,16 +1427,22 @@
 	// import monkeylearn from 'monkeylearn'
 	
 	var MonkeyLearn = __webpack_require__(19);
+	// import 'react-table/react-table.css'
+	
 	
 	// Import Style
 	
 	var defaultDomain = 'restaurants';
 	
-	var _ref = _jsx('option', {
+	var _ref = _jsx('br', {});
+	
+	var _ref2 = _jsx('br', {});
+	
+	var _ref3 = _jsx('option', {
 	  value: 'restaurants'
 	}, 'restaurants', 'Restaurant');
 	
-	var _ref2 = _jsx('option', {
+	var _ref4 = _jsx('option', {
 	  value: 'hotels'
 	}, 'hotels', 'Hotels');
 	
@@ -1578,6 +1589,10 @@
 	      }
 	    };
 	
+	    _this.handleClick = function () {
+	      _reactDom2.default.findDOMNode(_this.refs.my_file).value = "";
+	    };
+	
 	    _this.selectDomain = _this.selectDomain.bind(_this);
 	
 	    _this.state = {
@@ -1662,26 +1677,95 @@
 	      if (this.state.sentiment_data.length > 0) {
 	        console.log("this.state.sentiment_data: ", this.state.sentiment_data);
 	        var headers = [{ label: 'Text', key: 'string' }, { label: 'Topic 0', key: 'topic_0_name' }, { label: 'Topic 0 probability', key: 'topic_0_proba' }, { label: 'Topic 1', key: 'topic_1_name' }, { label: 'Topic 1 probability', key: 'topic_1_proba' }, { label: 'Topic 2', key: 'topic_2_name' }, { label: 'Topic 2 probability', key: 'topic_2_proba' }];
+	
+	        var columns = [{
+	          Header: 'Text',
+	          accessor: 'string' // String-based value accessors!
+	        }, {
+	          Header: 'Topic 0',
+	          accessor: 'topic_0_name'
+	        }, {
+	          Header: 'Topic 0 Percentage',
+	          accessor: 'topic_0_proba',
+	          Cell: function Cell(props) {
+	            return _jsx('span', {
+	              className: 'number'
+	            }, void 0, Number(props.value.toFixed(1)));
+	          } // Custom cell components!
+	        }, {
+	          Header: 'Topic 1',
+	          accessor: 'topic_1_name'
+	        }, {
+	          Header: 'Topic 1 Percentage',
+	          accessor: 'topic_1_proba',
+	          Cell: function Cell(props) {
+	            return _jsx('span', {
+	              className: 'number'
+	            }, void 0, Number(props.value.toFixed(1)));
+	          } // Custom cell components!
+	        }, {
+	          Header: 'Topic 2',
+	          accessor: 'topic_2_name'
+	        }, {
+	          Header: 'Topic 2 Percentage',
+	          accessor: 'topic_2_proba',
+	          Cell: function Cell(props) {
+	            return _jsx('span', {
+	              className: 'number'
+	            }, void 0, Number(props.value.toFixed(1)));
+	          } // Custom cell components!
+	        }];
+	
 	        element.push(_jsx(_reactCsv.CSVLink, {
 	          data: this.state.sentiment_data,
 	          headers: headers,
 	          filename: "sentiment_data.csv",
 	          className: 'btn btn-primary',
 	          target: '_blank'
-	        }, void 0, 'Download'));
-	      }
+	        }, void 0, 'Download result'));
 	
+	        element.push(_ref);
+	
+	        element.push(_jsx(_reactTable2.default, {
+	          defaultPageSize: 10,
+	          className: '-striped -highlight',
+	          data: this.state.sentiment_data,
+	          columns: columns
+	        }));
+	
+	        this.handleClick();
+	      }
 	      if (this.state.classify_data.length > 0) {
 	        console.log("this.state.classify_data: ", this.state.classify_data);
 	        var headers = [{ label: 'Text', key: 'string' }, { label: 'Polarity', key: 'polarity' }];
+	
+	        var _columns = [{
+	          Header: 'Text',
+	          accessor: 'string',
+	          minWidth: 350
+	        }, {
+	          Header: 'Polarity',
+	          accessor: 'polarity'
+	        }];
 	        element.push(_jsx(_reactCsv.CSVLink, {
 	          data: this.state.classify_data,
 	          headers: headers,
 	          filename: "classify_data.csv",
 	          className: 'btn btn-primary',
 	          target: '_blank'
-	        }, void 0, 'Download'));
+	        }, void 0, 'Download result'));
+	
+	        element.push(_ref2);
+	
+	        element.push(_jsx(_reactTable2.default, {
+	          defaultPageSize: 10,
+	          className: '-striped -highlight',
+	          data: this.state.classify_data,
+	          columns: _columns
+	        }));
+	        this.handleClick();
 	      }
+	
 	      return _jsx('div', {}, void 0, _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
 	        className: 'show-grid'
 	      }, void 0, _jsx(_reactBootstrap.Col, {
@@ -1699,7 +1783,7 @@
 	        className: _PostCreateWidget2.default['form-field'],
 	        value: this.state.domain,
 	        onChange: this.selectDomain
-	      }, void 0, _ref, _ref2), _jsx('a', {
+	      }, void 0, _ref3, _ref4), _jsx('a', {
 	        className: _PostCreateWidget2.default['post-submit-button'],
 	        onClick: this.topicModeling,
 	        href: '#'
@@ -1849,7 +1933,7 @@
 	
 	var _limax2 = _interopRequireDefault(_limax);
 	
-	var _sanitizeHtml = __webpack_require__(70);
+	var _sanitizeHtml = __webpack_require__(71);
 	
 	var _sanitizeHtml2 = _interopRequireDefault(_sanitizeHtml);
 	
@@ -2036,7 +2120,7 @@
 	  var assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets);
 	  var chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets);
 	
-	  return '\n    <!doctype html>\n    <html>\n      <head>\n        ' + head.base.toString() + '\n        ' + head.title.toString() + '\n        ' + head.meta.toString() + '\n        ' + head.link.toString() + '\n        ' + head.script.toString() + '\n\n        ' + (isProdMode ? '<link rel=\'stylesheet\' href=\'' + assetsManifest['/app.css'] + '\' />' : '') + '\n        <link href=\'https://fonts.googleapis.com/css?family=Lato:400,300,700\' rel=\'stylesheet\' type=\'text/css\'/>\n        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">\n      </head>\n      <body>\n        <div id="root">' + html + '</div>\n        <script>\n          window.__INITIAL_STATE__ = ' + JSON.stringify(initialState) + ';\n          ' + (isProdMode ? '//<![CDATA[\n          window.webpackManifest = ' + JSON.stringify(chunkManifest) + ';\n          //]]>' : '') + '\n        </script>\n        <script src=\'' + (isProdMode ? assetsManifest['/vendor.js'] : '/vendor.js') + '\'></script>\n        <script src=\'' + (isProdMode ? assetsManifest['/app.js'] : '/app.js') + '\'></script>\n        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>\n        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>\n      </body>\n    </html>\n  ';
+	  return '\n    <!doctype html>\n    <html>\n      <head>\n        ' + head.base.toString() + '\n        ' + head.title.toString() + '\n        ' + head.meta.toString() + '\n        ' + head.link.toString() + '\n        ' + head.script.toString() + '\n\n        ' + (isProdMode ? '<link rel=\'stylesheet\' href=\'' + assetsManifest['/app.css'] + '\' />' : '') + '\n        <link href=\'https://fonts.googleapis.com/css?family=Lato:400,300,700\' rel=\'stylesheet\' type=\'text/css\'/>\n        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">\n        <link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">\n      </head>\n      <body>\n        <div id="root">' + html + '</div>\n        <script>\n          window.__INITIAL_STATE__ = ' + JSON.stringify(initialState) + ';\n          ' + (isProdMode ? '//<![CDATA[\n          window.webpackManifest = ' + JSON.stringify(chunkManifest) + ';\n          //]]>' : '') + '\n        </script>\n        <script src=\'' + (isProdMode ? assetsManifest['/vendor.js'] : '/vendor.js') + '\'></script>\n        <script src=\'' + (isProdMode ? assetsManifest['/app.js'] : '/app.js') + '\'></script>\n        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>\n        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>\n      </body>\n    </html>\n  ';
 	};
 	
 	var renderError = function renderError(err) {
@@ -2240,28 +2324,34 @@
 /* 66 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools");
+	module.exports = require("react-table");
 
 /***/ },
 /* 67 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools-dock-monitor");
+	module.exports = require("redux-devtools");
 
 /***/ },
 /* 68 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-devtools-log-monitor");
+	module.exports = require("redux-devtools-dock-monitor");
 
 /***/ },
 /* 69 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-thunk");
+	module.exports = require("redux-devtools-log-monitor");
 
 /***/ },
 /* 70 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-thunk");
+
+/***/ },
+/* 71 */
 /***/ function(module, exports) {
 
 	module.exports = require("sanitize-html");
