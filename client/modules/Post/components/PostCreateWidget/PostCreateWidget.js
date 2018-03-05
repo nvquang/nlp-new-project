@@ -9,7 +9,8 @@ import {CSVDownload, CSVLink} from 'react-csv';
 var MonkeyLearn = require('monkeylearn');
 
 import ReactTable from 'react-table'
-// import 'react-table/react-table.css'
+
+import SweetAlert from 'sweetalert-react';
 
 
 // Import Style
@@ -29,7 +30,8 @@ export class PostCreateWidget extends Component {
       domain: defaultDomain,
       current_file_name: '',
       sentiment_data: [],
-      classify_data: []
+      classify_data: [],
+      show_alert: false
     };
   }
 
@@ -69,7 +71,8 @@ export class PostCreateWidget extends Component {
             summary_text: '',
             show_aspect_based: false,
             sentiment_data: [],
-            classify_data: []
+            classify_data: [],
+            show_alert: false
           })
       });
     } else if (this.state.current_file_name){
@@ -82,13 +85,19 @@ export class PostCreateWidget extends Component {
                 summary_text: '',
                 show_aspect_based: false,
                 sentiment_data: response_value.data.result,
-                classify_data: []
+                classify_data: [],
+                show_alert: false
             });
          })
          .catch( (error) => {
            console.log(error);
          });
+    } else {
+      this.setState({
+            show_alert: true
+      });
     }
+
   };
 
   sentimentClassify = () => {
@@ -106,7 +115,8 @@ export class PostCreateWidget extends Component {
             summary_text: '',
             show_aspect_based: false,
             sentiment_data: [],
-            classify_data: []
+            classify_data: [],
+            show_alert: false
           })
       });
     } else if (this.state.current_file_name){
@@ -119,12 +129,17 @@ export class PostCreateWidget extends Component {
                 summary_text: '',
                 show_aspect_based: false,
                 sentiment_data: [],
-                classify_data: response_value.data.result
+                classify_data: response_value.data.result,
+                show_alert: false
             });
          })
          .catch( (error) => {
            console.log(error);
          });
+    } else {
+      this.setState({
+            show_alert: true
+      });
     }
   };
 
@@ -142,8 +157,13 @@ export class PostCreateWidget extends Component {
             result: [],
             show_aspect_based: false,
             sentiment_data: [],
-            classify_data: []
+            classify_data: [],
+            show_alert: false
           })
+      });
+    } else {
+      this.setState({
+            show_alert: true
       });
     }
   };
@@ -157,9 +177,14 @@ export class PostCreateWidget extends Component {
         result: [],
         show_aspect_based: true,
         sentiment_data: [],
-        classify_data: []
+        classify_data: [],
+        show_alert: false
       })
       this.props.aspectBased(textRef.value, domain)
+    } else {
+      this.setState({
+            show_alert: true
+      });
     }
   };
 
@@ -326,6 +351,7 @@ export class PostCreateWidget extends Component {
       this.handleClick();
     }
 
+    console.log("this.state.show_alert: ", this.state.show_alert);
 
     return (
       <div>
@@ -353,6 +379,12 @@ export class PostCreateWidget extends Component {
                       <h2 className={styles['form-title']}>Result</h2>
                     </div>
                     < div id="result">{element}</div>
+                    <SweetAlert
+                        show={this.state.show_alert}
+                        title="WARNING"
+                        text="Please insert your text"
+                        onConfirm={() => this.setState({ show_alert: false })}
+                      />
                   </Col>
               </Row>
           </Grid>

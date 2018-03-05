@@ -1395,6 +1395,10 @@
 	
 	var _reactTable2 = _interopRequireDefault(_reactTable);
 	
+	var _sweetalertReact = __webpack_require__(72);
+	
+	var _sweetalertReact2 = _interopRequireDefault(_sweetalertReact);
+	
 	var _PostCreateWidget = {
 	  "form": "_1HNxVmVCIfsWU6Q22cRSd7",
 	  "form-content": "VlHIHfXe5nkoruuc0N8pJ",
@@ -1427,8 +1431,6 @@
 	// import monkeylearn from 'monkeylearn'
 	
 	var MonkeyLearn = __webpack_require__(19);
-	// import 'react-table/react-table.css'
-	
 	
 	// Import Style
 	
@@ -1468,7 +1470,8 @@
 	            summary_text: '',
 	            show_aspect_based: false,
 	            sentiment_data: [],
-	            classify_data: []
+	            classify_data: [],
+	            show_alert: false
 	          });
 	        });
 	      } else if (_this.state.current_file_name) {
@@ -1480,7 +1483,8 @@
 	            summary_text: '',
 	            show_aspect_based: false,
 	            sentiment_data: response_value.data.result,
-	            classify_data: []
+	            classify_data: [],
+	            show_alert: false
 	          });
 	        }).catch(function (error) {
 	          console.log(error);
@@ -1503,7 +1507,8 @@
 	            summary_text: '',
 	            show_aspect_based: false,
 	            sentiment_data: [],
-	            classify_data: []
+	            classify_data: [],
+	            show_alert: false
 	          });
 	        });
 	      } else if (_this.state.current_file_name) {
@@ -1515,7 +1520,8 @@
 	            summary_text: '',
 	            show_aspect_based: false,
 	            sentiment_data: [],
-	            classify_data: response_value.data.result
+	            classify_data: response_value.data.result,
+	            show_alert: false
 	          });
 	        }).catch(function (error) {
 	          console.log(error);
@@ -1537,8 +1543,14 @@
 	            result: [],
 	            show_aspect_based: false,
 	            sentiment_data: [],
-	            classify_data: []
+	            classify_data: [],
+	            show_alert: false
 	          });
+	        });
+	      } else {
+	        console.log("Here");
+	        _this.setState({
+	          show_alert: true
 	        });
 	      }
 	    };
@@ -1552,9 +1564,14 @@
 	          result: [],
 	          show_aspect_based: true,
 	          sentiment_data: [],
-	          classify_data: []
+	          classify_data: [],
+	          show_alert: false
 	        });
 	        _this.props.aspectBased(textRef.value, domain);
+	      } else {
+	        _this.setState({
+	          show_alert: true
+	        });
 	      }
 	    };
 	
@@ -1602,7 +1619,8 @@
 	      domain: defaultDomain,
 	      current_file_name: '',
 	      sentiment_data: [],
-	      classify_data: []
+	      classify_data: [],
+	      show_alert: false
 	    };
 	    return _this;
 	  }
@@ -1633,6 +1651,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var element = [];
 	      if (this.state.result.length > 0) {
 	        element.push(_jsx('div', {}, void 0, _jsx('span', {
@@ -1766,6 +1786,8 @@
 	        this.handleClick();
 	      }
 	
+	      console.log("this.state.show_alert: ", this.state.show_alert);
+	
 	      return _jsx('div', {}, void 0, _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
 	        className: 'show-grid'
 	      }, void 0, _jsx(_reactBootstrap.Col, {
@@ -1808,7 +1830,14 @@
 	        className: _PostCreateWidget2.default['form-title']
 	      }, void 0, 'Result')), _jsx('div', {
 	        id: 'result'
-	      }, void 0, element)))));
+	      }, void 0, element), _jsx(_sweetalertReact2.default, {
+	        show: this.state.show_alert,
+	        title: 'WARNING',
+	        text: 'Please insert your text',
+	        onConfirm: function onConfirm() {
+	          return _this2.setState({ show_alert: false });
+	        }
+	      })))));
 	    }
 	  }]);
 	
@@ -2120,7 +2149,7 @@
 	  var assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets);
 	  var chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets);
 	
-	  return '\n    <!doctype html>\n    <html>\n      <head>\n        ' + head.base.toString() + '\n        ' + head.title.toString() + '\n        ' + head.meta.toString() + '\n        ' + head.link.toString() + '\n        ' + head.script.toString() + '\n\n        ' + (isProdMode ? '<link rel=\'stylesheet\' href=\'' + assetsManifest['/app.css'] + '\' />' : '') + '\n        <link href=\'https://fonts.googleapis.com/css?family=Lato:400,300,700\' rel=\'stylesheet\' type=\'text/css\'/>\n        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">\n        <link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">\n      </head>\n      <body>\n        <div id="root">' + html + '</div>\n        <script>\n          window.__INITIAL_STATE__ = ' + JSON.stringify(initialState) + ';\n          ' + (isProdMode ? '//<![CDATA[\n          window.webpackManifest = ' + JSON.stringify(chunkManifest) + ';\n          //]]>' : '') + '\n        </script>\n        <script src=\'' + (isProdMode ? assetsManifest['/vendor.js'] : '/vendor.js') + '\'></script>\n        <script src=\'' + (isProdMode ? assetsManifest['/app.js'] : '/app.js') + '\'></script>\n        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>\n        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>\n      </body>\n    </html>\n  ';
+	  return '\n    <!doctype html>\n    <html>\n      <head>\n        ' + head.base.toString() + '\n        ' + head.title.toString() + '\n        ' + head.meta.toString() + '\n        ' + head.link.toString() + '\n        ' + head.script.toString() + '\n\n        ' + (isProdMode ? '<link rel=\'stylesheet\' href=\'' + assetsManifest['/app.css'] + '\' />' : '') + '\n        <link href=\'https://fonts.googleapis.com/css?family=Lato:400,300,700\' rel=\'stylesheet\' type=\'text/css\'/>\n        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">\n        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">\n        <link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">\n        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">\n      </head>\n      <body>\n        <div id="root">' + html + '</div>\n        <script>\n          window.__INITIAL_STATE__ = ' + JSON.stringify(initialState) + ';\n          ' + (isProdMode ? '//<![CDATA[\n          window.webpackManifest = ' + JSON.stringify(chunkManifest) + ';\n          //]]>' : '') + '\n        </script>\n        <script src=\'' + (isProdMode ? assetsManifest['/vendor.js'] : '/vendor.js') + '\'></script>\n        <script src=\'' + (isProdMode ? assetsManifest['/app.js'] : '/app.js') + '\'></script>\n        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>\n        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>\n      </body>\n    </html>\n  ';
 	};
 	
 	var renderError = function renderError(err) {
@@ -2355,6 +2384,12 @@
 /***/ function(module, exports) {
 
 	module.exports = require("sanitize-html");
+
+/***/ },
+/* 72 */
+/***/ function(module, exports) {
+
+	module.exports = require("sweetalert-react");
 
 /***/ }
 /******/ ]);

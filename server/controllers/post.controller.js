@@ -22,7 +22,6 @@ var MonkeyLearn = require('monkeylearn');
  * @returns void
  */
 export function aspectsBased(req, res) {
-  console.log("req.body.query: ", req.body.query)
   if (!req.body.query.text || !req.body.query.domain) {
     res.status(403).end();
   }
@@ -37,7 +36,6 @@ export function aspectsBased(req, res) {
     'text': req.body.query.text
   }, function(err, response) {
     if (err === null) {
-      console.log("response: ", response)
       res.json({"aspectBased": response})
     }
   });
