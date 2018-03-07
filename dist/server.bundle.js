@@ -1744,17 +1744,6 @@
 	              className: 'number'
 	            }, void 0, Number(props.value.toFixed(1)));
 	          } // Custom cell components!
-	        }, {
-	          Header: 'Topic 2',
-	          accessor: 'aspects[1][aspect_name]'
-	        }, {
-	          Header: 'Topic 2 polarity',
-	          accessor: 'aspects[1][aspect_polarity]',
-	          Cell: function Cell(props) {
-	            return _jsx('span', {
-	              className: 'number'
-	            }, void 0, Number(props.value.toFixed(1)));
-	          } // Custom cell components!
 	        }];
 	
 	        element.push(_jsx(_reactTable2.default, {
