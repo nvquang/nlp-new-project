@@ -1420,6 +1420,10 @@
 	
 	var _PostCreateWidget2 = _interopRequireDefault(_PostCreateWidget);
 	
+	var _loading = '/' + "2f212d1f8d640a245cc3c17ce6ec94ed.gif";
+	
+	var _loading2 = _interopRequireDefault(_loading);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1457,6 +1461,10 @@
 	    _this.classify = function () {
 	      var contentRef = _this.refs.content;
 	
+	      _this.setState({
+	        is_loading: true
+	      });
+	
 	      if (contentRef.value) {
 	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
 	        var module_id = 'cl_Jx8qzYJh';
@@ -1470,7 +1478,8 @@
 	            show_aspect_based: false,
 	            absa_data: [],
 	            classify_data: [],
-	            show_alert: false
+	            show_alert: false,
+	            is_loading: false
 	          });
 	        });
 	      } else if (_this.state.current_file_name) {
@@ -1483,20 +1492,33 @@
 	            show_aspect_based: false,
 	            absa_data: [],
 	            classify_data: response_value.data.result,
-	            show_alert: false
+	            show_alert: false,
+	            is_loading: false
 	          });
 	        }).catch(function (error) {
 	          console.log(error);
+	          _this.setState({
+	            is_loading: false,
+	            show_alert: true,
+	            alert_title: "ERROR",
+	            alert_content: "Error while process the uploaded file!!!"
+	          });
 	        });
 	      } else {
 	        _this.setState({
-	          show_alert: true
+	          is_loading: false,
+	          show_alert: true,
+	          alert_title: "WARNING",
+	          alert_content: "Please insert your text"
 	        });
 	      }
 	    };
 	
 	    _this.summary = function () {
 	      var contentRef = _this.refs.content;
+	      _this.setState({
+	        is_loading: true
+	      });
 	      if (contentRef.value) {
 	        var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
 	        var module_id = 'ex_94WD2XxD';
@@ -1510,19 +1532,36 @@
 	            show_aspect_based: false,
 	            absa_data: [],
 	            classify_data: [],
-	            show_alert: false
+	            show_alert: false,
+	            is_loading: false
 	          });
 	        });
 	      } else {
-	        _this.setState({
-	          show_alert: true
-	        });
+	        if (_this.state.current_file_name) {
+	          _this.setState({
+	            is_loading: false,
+	            show_alert: true,
+	            alert_title: "WARNING",
+	            alert_content: "This function is not support in file"
+	          });
+	        } else {
+	          _this.setState({
+	            is_loading: false,
+	            show_alert: true,
+	            alert_title: "WARNING",
+	            alert_content: "Please insert your text"
+	          });
+	        }
 	      }
 	    };
 	
 	    _this.aspectAnalysis = function () {
 	      var textRef = _this.refs.content;
 	      var domain = _this.state.domain;
+	      _this.setState({
+	        is_loading: true
+	      });
+	
 	      console.log("this.state.current_file_name: ", _this.state.current_file_name);
 	      if (textRef.value && domain) {
 	        _this.setState({
@@ -1531,7 +1570,8 @@
 	          show_aspect_based: true,
 	          absa_data: [],
 	          classify_data: [],
-	          show_alert: false
+	          show_alert: false,
+	          is_loading: false
 	        });
 	        _this.props.aspectBased(textRef.value, domain);
 	      } else if (_this.state.current_file_name) {
@@ -1543,21 +1583,34 @@
 	            show_aspect_based: false,
 	            absa_data: response_value.data.result,
 	            classify_data: [],
-	            show_alert: false
+	            show_alert: false,
+	            is_loading: false
+	          });
+	        }).catch(function (error) {
+	          console.log(error);
+	          _this.setState({
+	            is_loading: false,
+	            show_alert: true,
+	            alert_title: "ERROR",
+	            alert_content: "Error while process the uploaded file!!!"
 	          });
 	        });
-	        // .catch( (error) => {
-	        //   console.log(error);
-	        // });
 	      } else {
 	        _this.setState({
-	          show_alert: true
+	          is_loading: false,
+	          show_alert: true,
+	          alert_title: "WARNING",
+	          alert_content: "Please insert your text"
 	        });
 	      }
 	    };
 	
 	    _this.uploadFile = function () {
 	      if (_this.refs.my_file) {
+	        _this.setState({
+	          is_loading: true
+	        });
+	
 	        var file = $('#upload-input').get(0).files[0];
 	
 	        if (file) {
@@ -1574,14 +1627,24 @@
 	            processData: false,
 	            contentType: false,
 	            success: function success(response) {
-	              console.log('upload successful!\n' + response.filename);
+	              console.log('upload successful!' + response.filename);
 	              self.setState({
 	                current_file_name: response.filename,
 	                result: [],
 	                summary_text: '',
-	                show_aspect_based: false
+	                show_aspect_based: false,
+	                is_loading: false
 	              });
 	              console.log("this.state.current_file_name: ", self.state.current_file_name);
+	            },
+	            error: function error(_error) {
+	              console.log("Error: ", _error);
+	              self.setState({
+	                is_loading: false,
+	                show_alert: true,
+	                alert_title: "ERROR",
+	                alert_content: "Error while uploading the file!!!"
+	              });
 	            }
 	          });
 	        }
@@ -1612,7 +1675,10 @@
 	      current_file_name: '',
 	      absa_data: [],
 	      classify_data: [],
-	      show_alert: false
+	      show_alert: false,
+	      alert_title: '',
+	      alert_content: '',
+	      is_loading: false
 	    };
 	    return _this;
 	  }
@@ -1687,19 +1753,6 @@
 	        }
 	      }
 	      if (this.state.absa_data.length > 0) {
-	        // var headers = [
-	        //    {label: 'Text', key: 'text'},
-	        //    {label: 'Topic 1', key: 'aspects/0/aspect_name'},
-	        //    {label: 'Topic 1 polarity', key: 'aspects/0/aspect_polarity'},
-	        //    {label: 'Topic 2', key: 'aspects/1/aspect_name'},
-	        //    {label: 'Topic 2 polarity', key: 'aspects/1/aspect_polarity'}];
-	
-	        // const Json2csvParser = require('json2csv').Parser;
-	        // const fields = ['text', 'aspects.0.aspects_name', 'aspects.0.aspects_polarity'];
-	        //
-	        // const json2csvParser = new Json2csvParser({ fields, unwind: ['aspects']});
-	        // const csv = json2csvParser.parse(this.state.absa_data[0]);
-	        // console.log(csv);
 	        var absa_data = [];
 	        var nb_of_max_aspects = 0;
 	        for (var i = 0; i < this.state.absa_data.length; i++) {
@@ -1785,10 +1838,12 @@
 	        }));
 	        this.handleClick();
 	      }
-	
-	      console.log("this.state.show_alert: ", this.state.show_alert);
-	
-	      return _jsx('div', {}, void 0, _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
+	      return _jsx('div', {}, void 0, _jsx(_sweetalertReact2.default, {
+	        show: this.state.is_loading,
+	        title: 'Please wait a moment',
+	        imageUrl: _loading2.default,
+	        showConfirmButton: false
+	      }), _jsx(_reactBootstrap.Grid, {}, void 0, _jsx(_reactBootstrap.Row, {
 	        className: 'show-grid'
 	      }, void 0, _jsx(_reactBootstrap.Col, {
 	        xs: 6,
@@ -1828,8 +1883,8 @@
 	        id: 'result'
 	      }, void 0, element), _jsx(_sweetalertReact2.default, {
 	        show: this.state.show_alert,
-	        title: 'WARNING',
-	        text: 'Please insert your text',
+	        title: this.state.alert_title,
+	        text: this.state.alert_content,
 	        onConfirm: function onConfirm() {
 	          return _this2.setState({ show_alert: false });
 	        }

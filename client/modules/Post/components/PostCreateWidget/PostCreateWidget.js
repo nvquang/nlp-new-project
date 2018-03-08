@@ -4,18 +4,15 @@ import ReactDOM from 'react-dom'
 import { Grid, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import {CSVDownload, CSVLink} from 'react-csv';
-
 var MonkeyLearn = require('monkeylearn');
-
 import ReactTable from 'react-table'
-
 import SweetAlert from 'sweetalert-react';
-
 
 // Import Style
 import styles from './PostCreateWidget.css';
 var defaultDomain = 'restaurants';
 
+import loading_icon from './loading.gif'
 
 export class PostCreateWidget extends Component {
   constructor() {
@@ -30,7 +27,10 @@ export class PostCreateWidget extends Component {
       current_file_name: '',
       absa_data: [],
       classify_data: [],
-      show_alert: false
+      show_alert: false,
+      alert_title: '',
+      alert_content: '',
+      is_loading: false
     };
   }
 
@@ -60,6 +60,10 @@ export class PostCreateWidget extends Component {
   classify = () => {
     const contentRef = this.refs.content;
 
+    this.setState({
+      is_loading: true,
+    })
+
     if (contentRef.value) {
       var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
       var module_id = 'cl_Jx8qzYJh';
@@ -73,7 +77,8 @@ export class PostCreateWidget extends Component {
             show_aspect_based: false,
             absa_data: [],
             classify_data: [],
-            show_alert: false
+            show_alert: false,
+            is_loading: false,
           })
       });
     } else if (this.state.current_file_name){
@@ -87,21 +92,34 @@ export class PostCreateWidget extends Component {
                 show_aspect_based: false,
                 absa_data: [],
                 classify_data: response_value.data.result,
-                show_alert: false
+                show_alert: false,
+                is_loading: false
             });
          })
          .catch( (error) => {
            console.log(error);
+           this.setState({
+                 is_loading: false,
+                 show_alert: true,
+                 alert_title: "ERROR",
+                 alert_content: "Error while process the uploaded file!!!"
+           });
          });
     } else {
       this.setState({
-            show_alert: true
+            is_loading: false,
+            show_alert: true,
+            alert_title: "WARNING",
+            alert_content: "Please insert your text"
       });
     }
   };
 
   summary = () => {
     const contentRef = this.refs.content;
+    this.setState({
+      is_loading: true,
+    })
     if (contentRef.value) {
       var ml = new MonkeyLearn('8d78185efa69f65994a472c27d9a12a62b3ed402');
       var module_id = 'ex_94WD2XxD';
@@ -115,19 +133,37 @@ export class PostCreateWidget extends Component {
             show_aspect_based: false,
             absa_data: [],
             classify_data: [],
-            show_alert: false
+            show_alert: false,
+            is_loading: false
           })
       });
     } else {
-      this.setState({
-            show_alert: true
-      });
+      if (this.state.current_file_name) {
+        this.setState({
+              is_loading: false,
+              show_alert: true,
+              alert_title: "WARNING",
+              alert_content: "This function is not support in file"
+        });
+      } else {
+        this.setState({
+              is_loading: false,
+              show_alert: true,
+              alert_title: "WARNING",
+              alert_content: "Please insert your text"
+        });
+      }
+
     }
   };
 
   aspectAnalysis = () => {
     var textRef = this.refs.content;
     var domain =  this.state.domain;
+    this.setState({
+      is_loading: true,
+    })
+
     console.log("this.state.current_file_name: ", this.state.current_file_name)
     if (textRef.value && domain) {
       this.setState({
@@ -136,7 +172,8 @@ export class PostCreateWidget extends Component {
         show_aspect_based: true,
         absa_data: [],
         classify_data: [],
-        show_alert: false
+        show_alert: false,
+        is_loading: false
       })
       this.props.aspectBased(textRef.value, domain)
     } else if (this.state.current_file_name){
@@ -149,21 +186,35 @@ export class PostCreateWidget extends Component {
                 show_aspect_based: false,
                 absa_data: response_value.data.result,
                 classify_data: [],
-                show_alert: false
+                show_alert: false,
+                is_loading: false
             });
          })
-         // .catch( (error) => {
-         //   console.log(error);
-         // });
+         .catch( (error) => {
+           console.log(error);
+           this.setState({
+                 is_loading: false,
+                 show_alert: true,
+                 alert_title: "ERROR",
+                 alert_content: "Error while process the uploaded file!!!"
+           });
+         });
     } else {
       this.setState({
-            show_alert: true
+            is_loading: false,
+            show_alert: true,
+            alert_title: "WARNING",
+            alert_content: "Please insert your text"
       });
     }
   };
 
   uploadFile = () => {
     if (this.refs.my_file){
+      this.setState({
+        is_loading: true,
+      })
+
       var file = $('#upload-input').get(0).files[0]
 
       if (file){
@@ -180,14 +231,24 @@ export class PostCreateWidget extends Component {
           processData: false,
           contentType: false,
           success: function(response){
-              console.log('upload successful!\n' + response.filename);
+              console.log('upload successful!' + response.filename);
               self.setState({
                   current_file_name: response.filename,
                   result: [],
                   summary_text: '',
                   show_aspect_based: false,
+                  is_loading: false
               });
               console.log("this.state.current_file_name: ", self.state.current_file_name)
+          },
+          error: function (error) {
+              console.log("Error: ", error)
+              self.setState({
+                is_loading: false,
+                show_alert: true,
+                alert_title: "ERROR",
+                alert_content: "Error while uploading the file!!!"
+              });
           }
         });
       }
@@ -208,6 +269,8 @@ export class PostCreateWidget extends Component {
     return fatten
   }
   render() {
+
+
     let element = []
     if (this.state.result.length > 0){
         element.push(<div>
@@ -248,19 +311,6 @@ export class PostCreateWidget extends Component {
       }
     }
     if (this.state.absa_data.length > 0){
-      // var headers = [
-      //    {label: 'Text', key: 'text'},
-      //    {label: 'Topic 1', key: 'aspects/0/aspect_name'},
-      //    {label: 'Topic 1 polarity', key: 'aspects/0/aspect_polarity'},
-      //    {label: 'Topic 2', key: 'aspects/1/aspect_name'},
-      //    {label: 'Topic 2 polarity', key: 'aspects/1/aspect_polarity'}];
-
-      // const Json2csvParser = require('json2csv').Parser;
-      // const fields = ['text', 'aspects.0.aspects_name', 'aspects.0.aspects_polarity'];
-      //
-      // const json2csvParser = new Json2csvParser({ fields, unwind: ['aspects']});
-      // const csv = json2csvParser.parse(this.state.absa_data[0]);
-      // console.log(csv);
       var absa_data = []
       var nb_of_max_aspects = 0
       for (var i = 0; i<this.state.absa_data.length; i++){
@@ -343,11 +393,14 @@ export class PostCreateWidget extends Component {
             columns={columns}/>)
       this.handleClick();
     }
-
-    console.log("this.state.show_alert: ", this.state.show_alert);
-
     return (
       <div>
+        <SweetAlert
+          show={this.state.is_loading}
+          title="Please wait a moment"
+          imageUrl={loading_icon}
+          showConfirmButton = {false}
+        />
         <Grid>
               <Row className="show-grid">
                   <Col xs={6} md={6}>
@@ -373,8 +426,8 @@ export class PostCreateWidget extends Component {
                     < div id="result">{element}</div>
                     <SweetAlert
                         show={this.state.show_alert}
-                        title="WARNING"
-                        text="Please insert your text"
+                        title={this.state.alert_title}
+                        text={this.state.alert_content}
                         onConfirm={() => this.setState({ show_alert: false })}
                       />
                   </Col>
