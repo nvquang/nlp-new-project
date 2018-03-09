@@ -1753,26 +1753,21 @@
 	        }
 	      }
 	      if (this.state.absa_data.length > 0) {
-	        var absa_data = [];
-	        var nb_of_max_aspects = 0;
+	        var fatten_absa_data = [];
 	        for (var i = 0; i < this.state.absa_data.length; i++) {
 	          var nb_of_aspect = this.state.absa_data[i]['aspects'].length;
-	          absa_data.push(this.fattenAspects(this.state.absa_data[i], nb_of_aspect));
-	          if (nb_of_aspect > nb_of_max_aspects) {
-	            nb_of_max_aspects = nb_of_aspect;
-	          }
+	          fatten_absa_data.push(this.fattenAspects(this.state.absa_data[i], nb_of_aspect));
 	        }
 	
 	        var headers = ['text'];
+	        var nb_of_max_aspects = 3;
 	        for (var i = 1; i <= nb_of_max_aspects; i++) {
 	          headers.push('aspect.' + i + '.name');
 	          headers.push('aspect.' + i + '.polarity');
 	        }
 	
-	        console.log("absa_data: ", absa_data);
-	
 	        element.push(_jsx(_reactCsv.CSVLink, {
-	          data: absa_data,
+	          data: fatten_absa_data,
 	          headers: headers,
 	          filename: "absa_data.csv",
 	          className: 'btn btn-primary',
@@ -1780,8 +1775,6 @@
 	        }, void 0, 'Download result'));
 	
 	        element.push(_ref);
-	
-	        console.log("this.state.absa_data: ", this.state.absa_data);
 	
 	        var columns = [{
 	          Header: 'Text',
@@ -1791,12 +1784,7 @@
 	          accessor: 'aspects[0][aspect_name]'
 	        }, {
 	          Header: 'Topic 1 polarity',
-	          accessor: 'aspects[0][aspect_polarity]',
-	          Cell: function Cell(props) {
-	            return _jsx('span', {
-	              className: 'number'
-	            }, void 0, Number(props.value.toFixed(1)));
-	          } // Custom cell components!
+	          accessor: 'aspects[0][aspect_polarity]'
 	        }];
 	
 	        element.push(_jsx(_reactTable2.default, {
