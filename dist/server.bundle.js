@@ -1504,6 +1504,7 @@
 	            alert_content: "Error while process the uploaded file!!!"
 	          });
 	        });
+	        _this.handleClick();
 	      } else {
 	        _this.setState({
 	          is_loading: false,
@@ -1595,6 +1596,7 @@
 	            alert_content: "Error while process the uploaded file!!!"
 	          });
 	        });
+	        _this.handleClick();
 	      } else {
 	        _this.setState({
 	          is_loading: false,
@@ -1793,8 +1795,6 @@
 	          data: this.state.absa_data,
 	          columns: columns
 	        }));
-	
-	        this.handleClick();
 	      }
 	      if (this.state.classify_data.length > 0) {
 	        console.log("this.state.classify_data: ", this.state.classify_data);
@@ -1824,7 +1824,6 @@
 	          data: this.state.classify_data,
 	          columns: _columns
 	        }));
-	        this.handleClick();
 	      }
 	      return _jsx('div', {}, void 0, _jsx(_sweetalertReact2.default, {
 	        show: this.state.is_loading,

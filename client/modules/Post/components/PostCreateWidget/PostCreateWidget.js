@@ -105,6 +105,7 @@ export class PostCreateWidget extends Component {
                  alert_content: "Error while process the uploaded file!!!"
            });
          });
+      this.handleClick();
     } else {
       this.setState({
             is_loading: false,
@@ -199,6 +200,7 @@ export class PostCreateWidget extends Component {
                  alert_content: "Error while process the uploaded file!!!"
            });
          });
+      this.handleClick();
     } else {
       this.setState({
             is_loading: false,
@@ -351,9 +353,6 @@ export class PostCreateWidget extends Component {
           className="-striped -highlight"
           data={this.state.absa_data}
           columns={columns}/>)
-
-      this.handleClick();
-
     }
     if (this.state.classify_data.length > 0){
       console.log("this.state.classify_data: ", this.state.classify_data)
@@ -384,7 +383,6 @@ export class PostCreateWidget extends Component {
             className="-striped -highlight"
             data={this.state.classify_data}
             columns={columns}/>)
-      this.handleClick();
     }
     return (
       <div>
